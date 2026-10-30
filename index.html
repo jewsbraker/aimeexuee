@@ -75,7 +75,7 @@
   .cert li { padding: 6px 0; border-bottom: 1px dashed #e0c48a; }
   .cert li::before { content: "★ "; color: #d9a441; }
   .seal { width: 64px; height: 64px; margin: 10px auto 0; border-radius: 50%; display: grid; place-items: center; font-size: 30px; background: radial-gradient(#ffe48a, #d9a441); box-shadow: 0 3px 10px #0005; }
-  .lan { position: fixed; z-index: 5; bottom: -130px; pointer-events: none; animation: lanup var(--t, 16s) linear forwards; }
+  .lan { position: fixed; z-index: 5; bottom: -130px; pointer-events: auto; cursor: pointer; animation: lanup var(--t, 16s) linear forwards; }
   .lan .sw { text-align: center; animation: lsw 4s ease-in-out infinite alternate; }
   .lan .bx { position: relative; width: 58px; height: 74px; margin: 0 auto; border-radius: 16px 16px 12px 12px; background: radial-gradient(ellipse at 50% 60%, #fff6c8 0%, #ffd45a 40%, #ff9a2e 100%); border: 3px solid #fff3c4; box-shadow: 0 0 22px #ffd45a, 0 0 60px #ff9a2e, 0 0 110px #ff9a2e88; }
   .lan .bx::before, .lan .bx::after { content: ""; position: absolute; left: 50%; transform: translateX(-50%); width: 36px; height: 8px; border-radius: 4px; background: #b8641a; }
@@ -134,6 +134,7 @@
   var rnd = function (a, b) { return a + Math.random() * (b - a); }, D = Math.PI / 180;
   var cb = $('bk').getContext('2d'), cx = $('fx').getContext('2d'), cf = $('fr').getContext('2d');
   var W = 0, H = 0, dpr = 1, TOTAL = 5, got = 0, touched = {};
+  var low = false, MAXP = 260;
 
   /* judul */
   [['Happy', 0], ['Graduation', 350]].forEach(function (w) {
@@ -171,6 +172,7 @@
     }, 520);
   }
   $('snd').addEventListener('click', function () { snd = !snd; this.textContent = snd ? '🔔' : '🔕'; });
+  function buzz(n) { try { navigator.vibrate && navigator.vibrate(n); } catch (e) {} }
 
   /* ---------- Three.js ---------- */
   var scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(40, 1, .1, 100);
@@ -181,7 +183,7 @@
   var rim = new THREE.DirectionalLight(0xff9ec8, .55); rim.position.set(-6, 4, -6); scene.add(rim);
 
   function resize() {
-    dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
+    dpr = low ? 1 : Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1.5 : 2); W = innerWidth; H = innerHeight;
     ren.setPixelRatio(dpr); ren.setSize(W, H, false);
     ['bk', 'fx', 'fr'].forEach(function (k) { $(k).width = W * dpr; $(k).height = H * dpr; });
     [cb, cx, cf].forEach(function (c) { c.setTransform(dpr, 0, 0, dpr, 0, 0); });
@@ -196,12 +198,13 @@
   }
   addEventListener('resize', resize); resize();
 
-  var mats = {};
+  var mats = {}, GC = {};
+  function G(k, f) { return GC[k] || (GC[k] = f()); }
   function M(c) { return mats[c] || (mats[c] = new THREE.MeshStandardMaterial({ color: c, roughness: .28, metalness: 0 })); }
   var studG = new THREE.CylinderGeometry(.17, .17, .12, 14), PET = new THREE.SphereGeometry(1, 10, 8);
   function stud(c, x, y, z, p) { var m = new THREE.Mesh(studG, M(c)); m.position.set(x, y, z); p.add(m); return m; }
-  function box(w, h, d, c, x, y, z, p) { var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), M(c)); m.position.set(x, y, z); p.add(m); return m; }
-  function cyl(r, h, c, x, y, z, p, s) { var m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, s || 12), M(c)); m.position.set(x, y, z); p.add(m); return m; }
+  function box(w, h, d, c, x, y, z, p) { var m = new THREE.Mesh(G('b' + w + '_' + h + '_' + d, function () { return new THREE.BoxGeometry(w, h, d); }), M(c)); m.position.set(x, y, z); p.add(m); return m; }
+  function cyl(r, h, c, x, y, z, p, s) { var m = new THREE.Mesh(G('c' + r + '_' + h + '_' + (s || 12), function () { return new THREE.CylinderGeometry(r, r, h, s || 12); }), M(c)); m.position.set(x, y, z); p.add(m); return m; }
 
   var root = new THREE.Group(), bq = new THREE.Group(), body = new THREE.Group();
   scene.add(root); root.add(bq); bq.add(body);
@@ -359,6 +362,7 @@
   for (var i = 0; i < (innerWidth < 600 ? 50 : 85); i++) P.push(newP(false));
   for (var b = 0; b < 9; b++) BK.push({ x: rnd(0, 1), y: rnd(0, 1), r: rnd(30, 90), v: rnd(.00003, .0001), c: ['255,150,190', '255,214,140', '200,160,255'][b % 3] });
   function burstPetals(x, y, n, hearts) {
+    if (P.length > MAXP) return;
     for (var i = 0; i < n; i++) { var p = newP(true, x + rnd(-20, 20), y + rnd(-20, 20)); if (hearts) p.h = Math.random() < .3; p.z = Math.max(p.z, .3); P.push(p); }
   }
   function drawP(c, p) {
@@ -373,9 +377,13 @@
     cb.clearRect(0, 0, W, H); cf.clearRect(0, 0, W, H);
     BK.forEach(function (k) {
       k.y -= k.v * 16; if (k.y < -.2) k.y = 1.2;
-      var g = cb.createRadialGradient(k.x * W, k.y * H, 0, k.x * W, k.y * H, k.r);
-      g.addColorStop(0, 'rgba(' + k.c + ',.16)'); g.addColorStop(1, 'rgba(' + k.c + ',0)'); cb.fillStyle = g;
-      cb.beginPath(); cb.arc(k.x * W, k.y * H, k.r, 0, 6.2832); cb.fill();
+      if (!k.s) {
+        var s = document.createElement('canvas'); s.width = s.height = k.r * 2; var q = s.getContext('2d');
+        var g = q.createRadialGradient(k.r, k.r, 0, k.r, k.r, k.r);
+        g.addColorStop(0, 'rgba(' + k.c + ',.16)'); g.addColorStop(1, 'rgba(' + k.c + ',0)');
+        q.fillStyle = g; q.fillRect(0, 0, k.r * 2, k.r * 2); k.s = s;
+      }
+      cb.drawImage(k.s, k.x * W - k.r, k.y * H - k.r);
     });
     wind *= .97;
     for (var i = P.length - 1; i >= 0; i--) {
@@ -463,7 +471,7 @@
 
   /* ---------- aksi ---------- */
   var jy = 0, jv = 0, sq = 0, sqv = 0, finaleDone = false, typer = null, dawned = false, opened = false, envT = null, envSoon = false;
-  function updateHint() { hint.textContent = got < TOTAL ? 'Sentuh 5 bunga dulu ya (' + got + ' dari ' + TOTAL + ')' : 'Semua sudah kamu sentuh ✨'; }
+  function updateHint() { hint.textContent = got < TOTAL ? 'Sentuh 5 bunga dulu ya (' + got + ' dari ' + TOTAL + ')' : 'Semua sudah kamu sentuh ✨ Tangkap topi yang melayang!'; }
   updateHint(); resize(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(resize);
   function celebrate(x, y, big) {
     title.classList.add('show'); tone(98, .6, .09);
@@ -485,10 +493,31 @@
     setTimeout(function () { textBurst('SELAMAT', H * .3); }, 700); setTimeout(function () { textBurst('WISUDA!', H * .3); }, 3000); setTimeout(function () { $('pn').classList.remove('on'); }, 5400);
     setTimeout(function () { title.classList.add('hide'); }, 400); $('btn').classList.add('pulse'); setTimeout(openLetter, 5600);
   }
+
+  /* combo sentuhan cepat */
+  var cmb = 0, cmbT = 0;
+  function combo(x, y) {
+    var n = performance.now(); cmb = n - cmbT < 1500 ? cmb + 1 : 1; cmbT = n;
+    if (cmb >= 5 && cmb % 5 === 0) { floatWord('COMBO x' + cmb + ' 🔥', x, y - 60); launch(Math.max(40, Math.min(W - 40, x)), H * .25); throwCaps(2); buzz([30, 30, 30]); }
+  }
   function tapTarget(i, x, y) {
     if (i < 9) { var f = flowers[i]; f.pv = .2; f.w = 1; } else capSpin = 1;
-    chime(i); floatWord(WORDS[i], x, y - 20); burstPetals(x, y, 12, i % 3 === 0);
+    buzz(20); combo(x, y); chime(i); floatWord(WORDS[i], x, y - 20); burstPetals(x, y, 12, i % 3 === 0);
     if (!touched[i]) { touched[i] = 1; got++; updateHint(); if (got === TOTAL) finale(); }
+  }
+
+  /* tangkap topi yang melayang */
+  var caught = 0, lastCap = null;
+  function catchCap(x, y) {
+    var c = lastCap; if (!c) return; scene.remove(c);
+    var k = toss.indexOf(c); if (k >= 0) toss.splice(k, 1);
+    caught++; combo(x, y); chime(caught + 2); buzz(15);
+    floatWord('+1 🎓 (' + caught + ')', x, y - 20); burstPetals(x, y, 10, true);
+    if (caught % 10 === 0) {
+      celebrate(x, y, true);
+      setTimeout(function () { textBurst('AIMEE HEBAT', H * .3); }, 600);
+      setTimeout(function () { $('pn').classList.remove('on'); }, 3200);
+    }
   }
 
   var HUGS = ['Selamat, Sarjana KO AIMEEE 🫰'], hugI = 0;
@@ -503,7 +532,8 @@
   }
 
   /* overlay, surat, harapan, piagam */
-  function openOv(id) { $(id).classList.add('open'); }
+  var certSeen = false;
+  function openOv(id) { if (id === 'cert') certSeen = true; $(id).classList.add('open'); }
   function closeOv(o) {
     o.classList.remove('open');
     if (o.id === 'letter') { clearInterval(typer); typer = null; if (finaleDone && !dawned) { dawned = true; setTimeout(dawn, 600); } }
@@ -533,6 +563,10 @@
     setTimeout(function () {
       var e = document.createElement('div'); e.className = 'lan'; e.style.left = lanePos() + 'px'; e.style.setProperty('--t', rnd(16, 19).toFixed(1) + 's');
       e.innerHTML = '<div class="sw"><div class="bx"></div><div class="tx"></div></div>'; e.querySelector('.tx').textContent = txt;
+      e.addEventListener('click', function () {
+        var r = e.getBoundingClientRect(); chime(7); buzz(25);
+        burstPetals(r.left + 30, r.top + 40, 25, true); launch(r.left + 30, Math.max(H * .12, r.top)); e.remove();
+      });
       document.body.appendChild(e); setTimeout(function () { e.remove(); }, 21000);
     }, delay || 0);
   }
@@ -552,25 +586,76 @@
 
   /* pointer */
   var rc = new THREE.Raycaster(), v2 = new THREE.Vector2();
-  function pick(x, y) { v2.set(x / W * 2 - 1, -(y / H) * 2 + 1); rc.setFromCamera(v2, cam); var h = rc.intersectObjects(hit, false); return h.length ? h[0].object.userData.fi : -1; }
+  function pick(x, y) {
+    v2.set(x / W * 2 - 1, -(y / H) * 2 + 1); rc.setFromCamera(v2, cam);
+    var t = rc.intersectObjects(toss, true);
+    if (t.length) { var o = t[0].object; while (o.parent && o.parent !== scene) o = o.parent; lastCap = o; return -3; }
+    var h = rc.intersectObjects(hit, false); return h.length ? h[0].object.userData.fi : -1;
+  }
   var drag = false, moved = 0, lastX = 0, userRot = 0, vel = 0, tx = 0, sx = 0, mx = 0, canvasEl = $('gl');
-  canvasEl.addEventListener('pointerdown', function (e) { drag = true; moved = 0; lastX = e.clientX; vel = 0; ac(); music(); });
+  canvasEl.addEventListener('pointerdown', function (e) {
+    drag = true; moved = 0; lastX = e.clientX; vel = 0; ac(); music();
+    if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) DeviceOrientationEvent.requestPermission().catch(function () {});
+  });
   addEventListener('pointermove', function (e) {
     tx = (e.clientX / W - .5) * 2; wind = Math.max(-6, Math.min(6, wind + (e.clientX - mx) * .04)); mx = e.clientX;
-    for (var sp = 0; sp < 2; sp++) parts.push({ x: e.clientX, y: e.clientY, vx: rnd(-.6, .6), vy: rnd(-.6, .4), g: .02, f: .95, hue: rnd(38, 55), life: 1, decay: .05, sz: rnd(1.4, 2.4) });
+    for (var sp = 0; sp < 2 && parts.length < 1100; sp++) parts.push({ x: e.clientX, y: e.clientY, vx: rnd(-.6, .6), vy: rnd(-.6, .4), g: .02, f: .95, hue: rnd(38, 55), life: 1, decay: .05, sz: rnd(1.4, 2.4) });
     if (!drag) return; var dx = e.clientX - lastX; lastX = e.clientX; moved += Math.abs(dx); vel = dx * .012; userRot += vel;
   });
   function end(e) {
     if (!drag) return; drag = false;
-    if (e.type === 'pointerup' && moved < 10) { var i = pick(e.clientX, e.clientY); if (i === 10) { if (locked) floatWord('Sentuh 5 bunga dulu ya 🔒', e.clientX, e.clientY - 20); else { openOv('cert'); chime(4); } } else if (i === 11) hugBouquet(e.clientX, e.clientY); else if (i >= 0) tapTarget(i, e.clientX, e.clientY); else celebrate(e.clientX, e.clientY, false); }
+    if (e.type === 'pointerup' && moved < 10) {
+      var i = pick(e.clientX, e.clientY);
+      if (i === -3) catchCap(e.clientX, e.clientY);
+      else if (i === 10) { if (locked) floatWord('Sentuh 5 bunga dulu ya 🔒', e.clientX, e.clientY - 20); else { openOv('cert'); chime(4); } }
+      else if (i === 11) hugBouquet(e.clientX, e.clientY);
+      else if (i >= 0) tapTarget(i, e.clientX, e.clientY);
+      else celebrate(e.clientX, e.clientY, false);
+    }
   }
   addEventListener('pointerup', end); addEventListener('pointercancel', end);
   addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  addEventListener('deviceorientation', function (e) { if (e.gamma != null && !drag) tx = Math.max(-1, Math.min(1, e.gamma / 30)); });
+
+  /* tahan layar kosong: hujan kembang api */
+  var hold = 0;
+  canvasEl.addEventListener('pointerdown', function (e) {
+    clearTimeout(hold);
+    hold = setTimeout(function () {
+      if (drag && moved < 10 && pick(e.clientX, e.clientY) === -1) {
+        until = performance.now() + 4000; burstPetals(e.clientX, e.clientY, 40, true); buzz(40);
+        floatWord('Hujan kembang api! 🎆', e.clientX, e.clientY - 20);
+      }
+    }, 600);
+  });
+  addEventListener('pointerup', function () { clearTimeout(hold); });
+
+  /* piagam bergetar kalau belum dibuka */
+  var nudgeT = 0, dv = new THREE.Vector3();
+  function nudge(t) {
+    if (locked || certSeen) { dip.rotation.z = 0; dip.position.y = .22; return; }
+    var on = (t % 3) < .9;
+    dip.rotation.z = on ? Math.sin(t * 28) * .16 : 0;
+    dip.position.y = .22 + (on ? Math.abs(Math.sin(t * 14)) * .18 : 0);
+    if (on && t - nudgeT > 3) {
+      nudgeT = t; dip.getWorldPosition(dv); dv.project(cam);
+      var x = (dv.x + 1) / 2 * W, y = (1 - dv.y) / 2 * H;
+      floatWord('🏅 Sentuh aku!', x, y - 30); burstPetals(x, y, 8, false); tone(1318.5, .3, .05);
+    }
+  }
+
+  /* auto-kualitas: turunkan resolusi kalau HP mulai berat */
+  var pl = 0, pa = 0, pc2 = 0;
+  function perf(now) {
+    if (pl) { pa += now - pl; if (++pc2 === 90) { if (!low && pa / 90 > 26) { low = true; MAXP = 120; ren.setPixelRatio(1); ren.setSize(W, H, false); } pa = 0; pc2 = 0; } }
+    pl = now;
+  }
 
   /* ---------- loop ---------- */
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, T0 = performance.now();
   function ob(x) { if (x <= 0) return 0; if (x >= 1) return 1; var c = 1.70158; x -= 1; return 1 + (c + 1) * x * x * x + c * x * x; }
   function frame(now) {
+    perf(now);
     var t = now / 1000, e = (now - T0) / 1000;
     if (!drag) { userRot += vel; vel *= .95; }
     sx += (tx - sx) * .06;
@@ -600,7 +685,7 @@
       var c = toss[i], d = c.userData; d.v.y -= .011; c.position.add(d.v); c.rotation.x += d.r.x; c.rotation.y += d.r.y; c.rotation.z += d.r.z;
       if (c.position.y < -6) { scene.remove(c); toss.splice(i, 1); }
     }
-    ren.render(scene, cam); petalStep(t); fxStep(now); tStep();
+    nudge(t); ren.render(scene, cam); petalStep(t); fxStep(now); tStep();
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
