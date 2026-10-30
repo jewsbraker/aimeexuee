@@ -70,7 +70,7 @@
   .cert { position: relative; width: min(420px, 100%); max-height: 86vh; overflow: auto; touch-action: pan-y; padding: 26px 22px; text-align: center; color: #5a2a46; background: #fff8ec; border: 8px double #d9a441; box-shadow: 0 20px 60px #000a; animation: slide .8s; }
   .cert small { display: block; font: 500 14px "Fredoka", sans-serif; }
   .cert h2 { font: 600 24px "Fredoka", sans-serif; color: #a8741f; margin: 4px 0 10px; }
-  .cert .nm { font: 400 clamp(34px, 10vw, 46px)/1.1 "Pinyon Script", cursive; color: #b5496b; margin: 8px 0; }
+  .cert .nm { font: 400 clamp(30px, 9vw, 42px)/1.1 "Pinyon Script", cursive; color: #b5496b; margin: 8px 0; }
   .cert ul { list-style: none; padding: 0; margin: 12px 0; font: 600 16px "Fredoka", sans-serif; }
   .cert li { padding: 6px 0; border-bottom: 1px dashed #e0c48a; }
   .cert li::before { content: "★ "; color: #d9a441; }
@@ -119,6 +119,8 @@
 (function () {
   /* ===== UBAH BAGIAN INI SESUKA HATI ===== */
   var NAME = 'Anastasia Aimee Widjaja';
+  var DEGREE = ', S.Ds.';
+  var SHOWN = NAME; /* nama di plakat buket; berubah jadi ada gelar setelah 5 bunga disentuh */
   var NICK = 'Aimee';
   var FROM = 'From: The Best Person 2nd';
   var MESSAGE = 'Selamat wisuda, Aimee! Akhirnya satu perjalanan panjang selesai juga. Semoga semua pengalaman selama kuliah bisa jadi bekal buat perjalanan berikutnya.\n\nSemoga setelah ini makin banyak kesempatan baik yang datang, hal-hal yang kamu impikan satu per satu tercapai, dan tetap bisa menikmati setiap prosesnya.\n\nCongratulations on your graduation! Proud of you.';
@@ -141,7 +143,7 @@
     var s = document.createElement('span'); s.textContent = w[0]; s.style.setProperty('--d', w[1] + 'ms'); $('t1').appendChild(s);
   });
   $('sig').textContent = FROM; $('to').textContent = 'Dear ' + NICK + ',';
-  $('cn').textContent = NAME;
+  $('cn').textContent = NAME + DEGREE;
   AWARDS.forEach(function (a) { var li = document.createElement('li'); li.textContent = a; $('cl').appendChild(li); });
   if (PHOTOS.length) {
     var pb = document.createElement('button'); pb.className = 'ui'; pb.textContent = '🖼️ Kenangan'; $('bar').appendChild(pb);
@@ -163,14 +165,15 @@
     o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + d);
   }
   function chime(i) { tone(SC[i % 10], 1.1, .13); tone(SC[i % 10] * 2, .6, .035, 'triangle'); }
-    /* ===== MUSIK: putar file lagu ===== */
+
+  /* ===== MUSIK: putar file lagu ===== */
   var bgm = null;
   function music() {
     if (bgm) return;
     bgm = new Audio('I Do.mp3');
     bgm.loop = true;
     bgm.volume = .9;
-    bgm.currentTime = 15; /* ganti angkanya (detik) kalau mau mulai dari bagian reff */
+    bgm.currentTime = 15; /* ganti angkanya (detik) kalau mau mulai dari bagian lain */
     bgm.play().catch(function () {});
     setInterval(function () {
       bgm.muted = !snd;
@@ -228,8 +231,8 @@
     var g = pc.getContext('2d'); g.fillStyle = '#fff6ee'; g.fillRect(0, 0, 512, 170);
     g.strokeStyle = '#e8a6b8'; g.lineWidth = 6; g.strokeRect(10, 10, 492, 150);
     g.textAlign = 'center'; g.fillStyle = '#b5496b'; var fs = 56; g.font = '600 56px Fredoka, sans-serif';
-    while (g.measureText(NAME).width > 440 && fs > 20) { fs -= 2; g.font = '600 ' + fs + 'px Fredoka, sans-serif'; }
-    g.fillText(NAME, 256, 88);
+    while (g.measureText(SHOWN).width > 440 && fs > 20) { fs -= 2; g.font = '600 ' + fs + 'px Fredoka, sans-serif'; }
+    g.fillText(SHOWN, 256, 88);
     g.fillStyle = '#d98ca0'; g.font = '500 32px Fredoka, sans-serif'; g.fillText('Selamat wisuda', 256, 136); pt.needsUpdate = true;
   }
   plaque(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(plaque);
@@ -496,6 +499,8 @@
   }
   function finale() {
     if (finaleDone) return; finaleDone = true; setLock(false); celebrate(W / 2, H * .5, true);
+    /* nama di plakat buket berganti jadi ada gelar S.Ds. */
+    setTimeout(function () { SHOWN = NAME + DEGREE; plaque(); chime(9); floatWord('Sarjana Desain! 🎓', W / 2, H * .55); }, 3000);
     [0, 2, 4, 5, 7, 9].forEach(function (n, k) { setTimeout(function () { chime(n); }, 300 + k * 200); });
     setTimeout(function () { textBurst('SELAMAT', H * .3); }, 700); setTimeout(function () { textBurst('WISUDA!', H * .3); }, 3000); setTimeout(function () { $('pn').classList.remove('on'); }, 5400);
     setTimeout(function () { title.classList.add('hide'); }, 400); $('btn').classList.add('pulse'); setTimeout(openLetter, 5600);
