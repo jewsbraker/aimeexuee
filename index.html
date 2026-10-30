@@ -25,6 +25,8 @@
   #bk { z-index: 1; } #fx { z-index: 2; } #gl { z-index: 3; pointer-events: auto; } #fr { z-index: 4; }
   #title { position: fixed; z-index: 5; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + 5vh); text-align: center; pointer-events: none; padding: 0 12px; transition: opacity .8s; }
   #title.hide { opacity: 0; }
+  #pn { position: fixed; z-index: 4; left: 50%; transform: translate(-50%, -50%) scale(.92); opacity: 0; pointer-events: none; border-radius: 22px; background: #1c0e38f2; border: 3px solid #ffd45a; box-shadow: 0 0 30px #ff9a2e88, 0 10px 40px #000a; transition: opacity .5s, transform .5s; }
+  #pn.on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   #t1 { font-family: "Pinyon Script", cursive; font-size: clamp(38px, 12.5vw, 112px); line-height: 1.02; color: #fff1cf; }
   #t1 span { display: inline-block; opacity: 0; filter: blur(12px); transform: translateY(16px) scale(.94); margin: 0 .08em; }
   .show #t1 span { animation: rise 1.4s var(--d) cubic-bezier(.2,.8,.2,1) forwards, glow 3.2s calc(var(--d) + 1.4s) ease-in-out infinite; }
@@ -99,7 +101,7 @@
 </style>
 </head>
 <body>
-<canvas id="bk"></canvas><canvas id="fx"></canvas><canvas id="gl"></canvas><canvas id="fr"></canvas>
+<canvas id="bk"></canvas><canvas id="fx"></canvas><canvas id="gl"></canvas><div id="pn"></div><canvas id="fr"></canvas>
 <div id="title"><div id="t1"></div></div>
 <div id="hint"></div>
 <button class="ui" id="snd" aria-label="Suara">🔔</button>
@@ -388,7 +390,7 @@
   }
 
   /* ---------- kembang api ---------- */
-  var rockets = [], parts = [], until = 0, lastAuto = 0;
+  var rockets = [], parts = [], tparts = [], until = 0, lastAuto = 0;
   function launch(x, ty) { rockets.push({ x: x, y: H, vy: -Math.sqrt(2 * .16 * (H - ty)), hue: rnd(0, 360) }); }
   function explode(x, y, hue) {
     var kind = (Math.random() * 4) | 0, n = kind === 3 ? 90 : 70 + ((Math.random() * 40) | 0), i;
@@ -408,8 +410,19 @@
     g.font = '700 ' + fs + 'px Fredoka, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#fff'; g.fillText(txt, w / 2, c.height / 2);
     var d = g.getImageData(0, 0, c.width, c.height).data, st = Math.max(3, Math.round(fs / 13)), ox = (W - w) / 2, oy = y - c.height / 2;
     for (var py = 0; py < c.height; py += st) for (var px = 0; px < w; px += st) if (d[(py * c.width + px) * 4 + 3] > 128)
-      parts.push({ x: W / 2 + rnd(-40, 40), y: H + rnd(0, 50), tx: ox + px, ty: oy + py, hold: (110 + rnd(0, 20)) | 0, hue: rnd(38, 55), g: .03, f: .98, life: 1, decay: .014, sz: 2.2, vx: 0, vy: 0 });
+      tparts.push({ x: W / 2 + rnd(-40, 40), y: H + rnd(0, 50), tx: ox + px, ty: oy + py, hold: (110 + rnd(0, 20)) | 0, hue: rnd(38, 55), g: .03, f: .98, life: 1, decay: .014, sz: 2.8, vx: 0, vy: 0 });
+    var pn = $('pn'); pn.style.top = y + 'px'; pn.style.width = Math.min(W * .96, w + 24) + 'px'; pn.style.height = (c.height + 30) + 'px'; pn.classList.add('on');
     tone(196, .8, .06);
+  }
+  function tStep() {
+    for (var i = tparts.length - 1; i >= 0; i--) {
+      var p = tparts[i];
+      if (p.tx !== undefined) { p.x += (p.tx - p.x) * .09; p.y += (p.ty - p.y) * .09; if (--p.hold < 0) { p.tx = undefined; p.vx = rnd(-1.5, 1.5); p.vy = rnd(-1.5, 1); } }
+      else { p.vx *= p.f; p.vy = p.vy * p.f + p.g; p.x += p.vx; p.y += p.vy; p.life -= p.decay; }
+      if (p.life <= 0) { tparts.splice(i, 1); continue; }
+      cf.fillStyle = 'hsla(' + p.hue + ',100%,' + (62 + p.life * 16) + '%,' + p.life + ')';
+      cf.beginPath(); cf.arc(p.x, p.y, p.sz * (.5 + p.life * .6), 0, 6.2832); cf.fill();
+    }
   }
   function fxStep(now) {
     cx.globalCompositeOperation = 'destination-out'; cx.fillStyle = 'rgba(0,0,0,.22)'; cx.fillRect(0, 0, W, H); cx.globalCompositeOperation = 'lighter';
@@ -469,7 +482,7 @@
   function finale() {
     if (finaleDone) return; finaleDone = true; setLock(false); celebrate(W / 2, H * .5, true);
     [0, 2, 4, 5, 7, 9].forEach(function (n, k) { setTimeout(function () { chime(n); }, 300 + k * 200); });
-    setTimeout(function () { textBurst('SELAMAT', H * .3); }, 700); setTimeout(function () { textBurst('WISUDA!', H * .3); }, 3000);
+    setTimeout(function () { textBurst('SELAMAT', H * .3); }, 700); setTimeout(function () { textBurst('WISUDA!', H * .3); }, 3000); setTimeout(function () { $('pn').classList.remove('on'); }, 5400);
     setTimeout(function () { title.classList.add('hide'); }, 400); $('btn').classList.add('pulse'); setTimeout(openLetter, 5600);
   }
   function tapTarget(i, x, y) {
@@ -587,7 +600,7 @@
       var c = toss[i], d = c.userData; d.v.y -= .011; c.position.add(d.v); c.rotation.x += d.r.x; c.rotation.y += d.r.y; c.rotation.z += d.r.z;
       if (c.position.y < -6) { scene.remove(c); toss.splice(i, 1); }
     }
-    ren.render(scene, cam); petalStep(t); fxStep(now);
+    ren.render(scene, cam); petalStep(t); fxStep(now); tStep();
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
