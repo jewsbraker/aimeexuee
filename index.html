@@ -163,13 +163,20 @@
     o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + d);
   }
   function chime(i) { tone(SC[i % 10], 1.1, .13); tone(SC[i % 10] * 2, .6, .035, 'triangle'); }
-  var MEL = [0, 2, 4, 2, 5, 4, 2, 0, 4, 5, 7, 5, 4, 2, 0, 2], mi = 0, mt = null;
+    /* ===== MUSIK: putar file lagu ===== */
+  var bgm = null;
   function music() {
-    if (mt) return;
-    mt = setInterval(function () {
-      if (!snd || document.hidden) return;
-      tone(SC[MEL[mi++ % 16]] / 2, 1.8, .03, 'triangle'); if (mi % 4 === 1) tone(SC[0] / 4, 2.4, .035);
-    }, 520);
+    if (bgm) return;
+    bgm = new Audio('I Do.mp3');
+    bgm.loop = true;
+    bgm.volume = .9;
+    bgm.currentTime = 15; /* ganti angkanya (detik) kalau mau mulai dari bagian reff */
+    bgm.play().catch(function () {});
+    setInterval(function () {
+      bgm.muted = !snd;
+      if (document.hidden) bgm.pause();
+      else if (bgm.paused) bgm.play().catch(function () {});
+    }, 400);
   }
   $('snd').addEventListener('click', function () { snd = !snd; this.textContent = snd ? '🔔' : '🔕'; });
   function buzz(n) { try { navigator.vibrate && navigator.vibrate(n); } catch (e) {} }
