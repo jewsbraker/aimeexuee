@@ -131,7 +131,7 @@
   /* ===== UBAH BAGIAN INI SESUKA HATI ===== */
   var NAME = 'Fransiskus Hartono';
   var DEGREE = ', S.M.';
-  var SHOWN = NAME; /* nama di plakat buket; berubah jadi ada gelar setelah 5 bunga disentuh */
+  var SHOWN = NAME; /* nama di plakat buket; berubah jadi ada gelar setelah 5 brokoli disentuh */
   var NICK = 'Fransiskus';
   var FROM = 'From: The Best Person 2nd';
   var MESSAGE = 'Selamat wisuda, Franss! Akhirnya satu perjalanan panjang selesai juga. Semoga semua pengalaman selama kuliah bisa jadi bekal buat perjalanan berikutnya.\n\nSemoga setelah ini makin banyak kesempatan baik yang datang, hal-hal yang kamu impikan satu per satu tercapai, dan tetap bisa menikmati setiap prosesnya.\n\nCongratulations on your graduation! Proud of you.';
@@ -269,32 +269,51 @@
   box(.02, .3, .02, '#f3d9a4', 0, -.15, 0, tag);
   var hm = new THREE.Mesh(new THREE.ExtrudeGeometry(hs, { depth: .06, bevelEnabled: false }), M('#ffd54a')); hm.position.set(0, -.5, 0); tag.add(hm);
 
-  /* brokoli */
+  /* ---------- BROKOLI: kepala brokoli yang padat dan berkubah ---------- */
   var hit = [], flowers = [], sway = [], UP = new THREE.Vector3(0, 1, 0);
   var dip = new THREE.Group(); dip.position.set(-1.7, .22, .9); dip.rotation.y = .6; root.add(dip);
   cyl(.17, 1.1, '#fff3d6', 0, 0, 0, dip, 16).rotation.z = Math.PI / 2;
   cyl(.185, .16, '#d9788f', 0, 0, 0, dip, 16).rotation.z = Math.PI / 2;
   [-1, 1].forEach(function (k) { cyl(.2, .05, '#f0dcae', k * .56, 0, 0, dip, 16).rotation.z = Math.PI / 2; });
   dip.traverse(function (m) { if (m.isMesh) { m.userData.fi = 10; hit.push(m); } });
-  function petal(par, c, a, r0, tilt, len, th, w) {
+  function leafBlade(par, c, a, r0, tilt, len, th, w) {
     var g = new THREE.Group(); g.rotation.y = -a; var m = new THREE.Mesh(PET, M(c));
     m.scale.set(len, th, w); m.position.set(r0 + Math.cos(tilt) * len, Math.sin(tilt) * len, 0); m.rotation.z = tilt; g.add(m); par.add(g); return m;
   }
   var EYE = new THREE.SphereGeometry(1, 10, 8), studS = new THREE.CylinderGeometry(.075, .075, .07, 12);
   function sstud(c, x, y, z, p) { var m = new THREE.Mesh(studS, M(c)); m.position.set(x, y, z); p.add(m); return m; }
+  /* kepala brokoli asli: batang tebal + kubah kuntum padat berlapis-lapis */
   function broccoliHead(head) {
-    /* batang pucat */
-    cyl(.09, .55, '#c9e8a8', 0, .2, 0, head, 12);
-    /* kuntum brokoli: [x, y, z, radius] */
-    var fl = [
-      [0, .78, 0, .34], [.22, .62, .14, .24], [-.22, .64, .12, .25], [.12, .6, -.24, .25],
-      [-.14, .6, -.22, .24], [.32, .5, -.06, .2], [-.32, .5, .02, .2], [0, .52, .32, .22],
-      [.04, .5, -.34, .2], [.2, .7, -.2, .22], [-.2, .72, -.18, .2]
+    var greens = ['#3f8f4a', '#4a9952', '#5aa862', '#2f7a3e', '#6ab36e', '#468f50'];
+    var gi = 0;
+    function floret(x, y, z, r) {
+      var m = new THREE.Mesh(PET, M(greens[gi % greens.length])); gi++;
+      m.scale.setScalar(r); m.position.set(x, y, z); head.add(m);
+    }
+    /* batang pucat & tebal, sedikit mengecil ke atas seperti batang brokoli asli */
+    cyl(.16, .62, '#d4ecb0', 0, .3, 0, head, 14);
+    cyl(.12, .3, '#cbe6a0', 0, .72, 0, head, 14);
+    /* dua helai daun kecil melekat di pangkal kubah, ciri khas brokoli */
+    [-1, 1].forEach(function (s) {
+      var lb = box(.4, .04, .2, '#8fcf8a', s * .22, .5, -.18, head); lb.rotation.set(.3, s * .5, s * .35);
+    });
+    /* puncak kubah */
+    floret(0, 1.16, 0, .3);
+    /* cincin-cincin kuntum membentuk kubah brokoli yang padat & bulat */
+    var rings = [
+      { y: 1.03, rad: .26, n: 6, s: .27 },
+      { y: .92, rad: .46, n: 9, s: .26 },
+      { y: .8, rad: .62, n: 12, s: .25 },
+      { y: .68, rad: .74, n: 14, s: .24 },
+      { y: .58, rad: .78, n: 12, s: .22 },
+      { y: .5, rad: .7, n: 8, s: .19 }
     ];
-    var greens = ['#3f8f4a', '#5aa862', '#2f7a3e'];
-    fl.forEach(function (f, i) {
-      var m = new THREE.Mesh(PET, M(greens[i % greens.length]));
-      m.scale.setScalar(f[3]); m.position.set(f[0], f[1], f[2]); head.add(m);
+    rings.forEach(function (ring) {
+      for (var i = 0; i < ring.n; i++) {
+        var a = (i / ring.n) * 6.2832 + rnd(-.12, .12);
+        var rr = ring.rad + rnd(-.04, .04);
+        floret(Math.cos(a) * rr, ring.y + rnd(-.03, .03), Math.sin(a) * rr, ring.s + rnd(-.02, .02));
+      }
     });
   }
   function orient(th, ph) {
@@ -305,41 +324,39 @@
     var i = flowers.length, o = new THREE.Group(), pr = ph * D;
     o.position.set(rnd(-.15, .15), 2.7, rnd(-.15, .15)); bq.add(o);
     var inn = orient(th * D, pr); o.add(inn);
-    cyl(.05, L, '#4fae6a', 0, L / 2, 0, inn, 8);
-    var lf = new THREE.Group(); lf.position.y = L * .5; lf.rotation.y = i * 2.4; inn.add(lf);
-    var lb = box(.5, .05, .24, '#6fcf7f', .3, 0, 0, lf); lb.rotation.z = .35; sstud('#6fcf7f', .22, .06, 0, lb);
+    cyl(.06, L, '#4fae6a', 0, L / 2, 0, inn, 8);
     var head = new THREE.Group(); head.position.y = L; head.scale.setScalar(size * .85); inn.add(head);
     head.quaternion.setFromAxisAngle(new THREE.Vector3(Math.sin(pr), 0, -Math.cos(pr)), (th === 0 ? 72 : 42) * D).multiply(new THREE.Quaternion().setFromAxisAngle(UP, Math.PI / 2 - pr));
     broccoliHead(head);
     head.traverse(function (m) { if (m.isMesh) { m.userData.fi = i; hit.push(m); } });
     flowers.push({ o: o, ph: rnd(0, 6.28), amp: rnd(.02, .045), pp: 0, pv: 0, w: 0, d: .9 + i * .17 });
   }
-  flower(0, 90, 3.4, 1.25);
-  flower(20, 0, 2.8, 1.15);
-  flower(20, 120, 2.8, 1.05);
-  flower(20, 240, 2.8, 1.15);
-  flower(38, 60, 2.1, 1.1);
-  flower(38, 150, 2.2, 1);
-  flower(38, 240, 2.1, 1);
-  flower(38, 330, 2.2, 1.05);
-  flower(50, 100, 1.55, .9);
+  flower(0, 90, 3.0, 1.1);
+  flower(20, 0, 2.5, 1.0);
+  flower(20, 120, 2.5, .95);
+  flower(20, 240, 2.5, 1.0);
+  flower(38, 60, 1.9, .95);
+  flower(38, 150, 2.0, .85);
+  flower(38, 240, 1.9, .85);
+  flower(38, 330, 2.0, .9);
+  flower(50, 100, 1.45, .75);
   /* kertas pembungkus, pita & plakat bisa dipencet */
   [body, pg].forEach(function (g) { g.traverse(function (m) { if (m.isMesh) { m.userData.fi = 11; hit.push(m); } }); });
 
-  function sprig(th, ph, L, kind) {
+  /* dedaunan hijau sebagai pengisi buket (tanpa bentuk bunga sama sekali) */
+  function sprig(th, ph, L) {
     var o = new THREE.Group(); o.position.set(rnd(-.2, .2), 2.7, rnd(-.2, .2)); bq.add(o);
     var inn = orient(th * D, ph * D); o.add(inn); cyl(.035, L, '#6c9c78', 0, L / 2, 0, inn, 6);
     for (var k = 0; k < 9; k++) {
-      var m = new THREE.Mesh(PET, M(kind ? ['#9b7fd1', '#b9a1e8'][k % 2] : ['#9fbfa8', '#b4cfb9'][k % 2]));
-      if (kind) { m.scale.set(.07, .1, .07); m.position.set((k % 2 ? 1 : -1) * .05, L * .6 + k * .09, 0); }
-      else { m.scale.set(.2, .035, .2); m.position.set((k % 2 ? 1 : -1) * .14, L * .3 + k * (L * .075), 0); m.rotation.set(rnd(-.5, .5), 0, (k % 2 ? 1 : -1) * .5); }
+      var m = new THREE.Mesh(PET, M(['#9fbfa8', '#b4cfb9'][k % 2]));
+      m.scale.set(.2, .035, .2); m.position.set((k % 2 ? 1 : -1) * .14, L * .3 + k * (L * .075), 0); m.rotation.set(rnd(-.5, .5), 0, (k % 2 ? 1 : -1) * .5);
       inn.add(m);
     }
     sway.push({ o: o, ph: rnd(0, 6.28) });
   }
-  [[28, 30, 2.5, 1], [28, 210, 2.5, 1], [44, 100, 1.8, 1], [44, 290, 1.9, 1], [30, 80, 2.4, 0], [30, 260, 2.4, 0], [46, 20, 1.8, 0], [46, 190, 1.8, 0]].forEach(function (s) { sprig(s[0], s[1], s[2], s[3]); });
+  [[28, 30, 2.5], [28, 210, 2.5], [44, 100, 1.8], [44, 290, 1.9], [30, 80, 2.4], [30, 260, 2.4], [46, 20, 1.8], [46, 190, 1.8]].forEach(function (s) { sprig(s[0], s[1], s[2]); });
   var lg = new THREE.Group(); lg.position.set(0, 2.85, 0); bq.add(lg);
-  for (var l = 0; l < 8; l++) petal(lg, l % 2 ? '#6fa383' : '#82b595', l * 6.2832 / 8 + .2, .25, rnd(25, 50) * D, .85, .05, .28);
+  for (var l = 0; l < 8; l++) leafBlade(lg, l % 2 ? '#6fa383' : '#82b595', l * 6.2832 / 8 + .2, .25, rnd(25, 50) * D, .85, .05, .28);
 
   /* topi wisuda melayang */
   var cap = new THREE.Group();
