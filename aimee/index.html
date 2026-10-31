@@ -80,6 +80,12 @@
   .lan .bx { position: relative; width: 58px; height: 74px; margin: 0 auto; border-radius: 16px 16px 12px 12px; background: radial-gradient(ellipse at 50% 60%, #fff6c8 0%, #ffd45a 40%, #ff9a2e 100%); border: 3px solid #fff3c4; box-shadow: 0 0 22px #ffd45a, 0 0 60px #ff9a2e, 0 0 110px #ff9a2e88; }
   .lan .bx::before, .lan .bx::after { content: ""; position: absolute; left: 50%; transform: translateX(-50%); width: 36px; height: 8px; border-radius: 4px; background: #b8641a; }
   .lan .bx::before { top: -9px; } .lan .bx::after { bottom: -9px; }
+    .lan .bx { animation: geter .18s steps(2, end) infinite; }
+  @keyframes geter {
+    0%   { transform: translate(-1.5px, 0) rotate(-3deg); }
+    50%  { transform: translate(1.5px, -1px) rotate(3deg); }
+    100% { transform: translate(-1px, 1px) rotate(-2deg); }
+  }
   .lan .tx { margin: 14px auto 0; width: max-content; max-width: 140px; padding: 6px 12px; border-radius: 14px; background: #1c0e38; border: 2px solid #ffd45a; font: 600 13px/1.3 "Fredoka", sans-serif; color: #fff3d6; box-shadow: 0 0 14px #ffd45a77; }
   @keyframes lanup { to { transform: translateY(-125vh); } }
   @keyframes lsw { from { transform: translateX(-16px); } to { transform: translateX(16px); } }
@@ -570,6 +576,35 @@
     var lo = 30, hi = Math.max(lo, W - 140 - 30), lane;
     do { lane = (Math.random() * 3) | 0; } while (lane === lastLane); lastLane = lane;
     return Math.round(lo + (hi - lo) * lane / 2);
+  }
+    /* efek suara lentera saat di-tap: whoosh + denting */
+  function lanternSfx() {
+    if (!snd) return;
+    var a = ac(); if (!a) return;
+    var t = a.currentTime;
+
+    /* whoosh: nada naik cepat */
+    var o = a.createOscillator(), g = a.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(600, t);
+    o.frequency.exponentialRampToValueAtTime(1800, t + .25);
+    g.gain.setValueAtTime(.0001, t);
+    g.gain.exponentialRampToValueAtTime(.18, t + .02);
+    g.gain.exponentialRampToValueAtTime(.0001, t + .5);
+    o.connect(g); g.connect(a.destination);
+    o.start(t); o.stop(t + .5);
+
+    /* denting kecil berurutan */
+    [1568, 2093, 2637].forEach(function (f, i) {
+      var s = a.currentTime + .1 + i * .07;
+      var d = a.createOscillator(), dg = a.createGain();
+      d.type = 'triangle';
+      d.frequency.value = f;
+      dg.gain.setValueAtTime(.06, s);
+      dg.gain.exponentialRampToValueAtTime(.0001, s + .35);
+      d.connect(dg); dg.connect(a.destination);
+      d.start(s); d.stop(s + .35);
+    });
   }
   function lantern(txt, delay) {
     setTimeout(function () {
