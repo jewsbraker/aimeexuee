@@ -104,6 +104,13 @@
     #hint { font-size: 13px; padding: 6px 12px; }
   }
   @media (prefers-reduced-motion: reduce) { .show #t1 span { animation: rise .01s forwards; } #btn.pulse { animation: none; } }
+
+.paper { max-height: 90vh; max-height: 90dvh; padding-top: var(--lh); background-attachment: local; }
+.paper p { font-size: var(--fs, 26px); line-height: var(--lh); }
+.paper .to { margin-bottom: 0; }
+@media (max-width: 420px), (max-height: 700px) { .paper p { font-size: var(--fs, 19px); } }
+
+
 </style>
 </head>
 <body>
@@ -129,7 +136,7 @@
   var SHOWN = NAME; /* nama di plakat buket; berubah jadi ada gelar setelah 5 bunga disentuh */
   var NICK = 'Aimee';
   var FROM = 'From: The Best Person 2nd';
-  var MESSAGE = 'Selamat wisuda, Aimee!\n\nSenang rasanya pernah punya kesempatan untuk mengenal dan bekerja bareng kamu. Ada banyak hal yang mungkin terlihat sederhana selama kita berinteraksi, tapi ternyata meninggalkan kesan tersendiri buat aku.\n\nAku harap di tengah perjalananmu mengejar banyak hal ke depannya, kamu juga bisa sesekali berhenti sejenak dan melihat kembali sejauh apa kamu sudah melangkah. Mengingat semua proses, tantangan, dan hal-hal yang sudah berhasil kamu lewati. Karena terkadang, kita terlalu sibuk memikirkan apa yang belum tercapai sampai lupa betapa jauhnya kita sudah berjalan.\n\nThank you for being part of a chapter I\'ll remember. Semoga perjalanan berikutnya membawa lebih banyak kesempatan baik dan hal-hal yang selama ini kamu impikan.\n\nCongratulations on your graduation, Aimee. You deserve to celebrate this moment!';
+  var MESSAGE = 'Selamat wisuda, Aimee!\n\nSenang rasanya pernah punya kesempatan untuk mengenal dan bekerja bareng kamu. Salah satu hal yang berkesan buat aku adalah bisa bertemu seseorang dengan pola pikir dan perspektif seperti kamu.\n\nAku harap di tengah perjalananmu mengejar banyak hal ke depannya, kamu juga bisa sesekali berhenti sejenak dan melihat kembali sejauh apa kamu sudah melangkah. Mengingat semua proses, tantangan, dan hal-hal yang sudah berhasil kamu lewati. Karena terkadang, kita terlalu sibuk memikirkan apa yang belum tercapai sampai lupa betapa jauhnya kita sudah berjalan.\n\nThank you for being part of a chapter I\'ll remember. Semoga perjalanan berikutnya membawa lebih banyak kesempatan baik dan hal-hal yang selama ini kamu impikan.\n\nCongratulations on your graduation, Aimee. You deserve to celebrate this moment!';
   var WORDS = ['Selamat ya!', 'Kamu hebat', 'Kerja kerasmu terbayar', 'Akhirnya wisuda!', 'Kamu keren banget', 'Semangat terus ya', 'Bangga sama kamu', 'Dunia menunggumu', 'Semoga sukses selalu', 'Selamat, Sarjana KO AIMEEE 🫰'];
   var WISHES = ['Semoga sehat selalu', 'Karier yang cerah', 'Bahagia setiap hari', 'Semua mimpimu tercapai'];
   var AWARDS = ['Sarjana Design', 'The Best Mentor N AMDD', 'The No 1st Best Person in the World'];
@@ -561,11 +568,20 @@
   });
   function showEnv() { if (!opened && finaleDone) $('env').classList.add('on'); }
   envT = setTimeout(showEnv, 9000);
+  function fitLetter() {
+  var p = $('lp'), m = $('msg'), s = $('sig'), small = innerWidth < 420 || innerHeight < 700;
+  var fs = small ? 19 : 26, lh = Math.round(fs * 1.3);
+  m.textContent = MESSAGE; s.classList.add('on');
+  function set() { p.style.setProperty('--fs', fs + 'px'); p.style.setProperty('--lh', lh + 'px'); }
+  set();
+  while (p.scrollHeight > p.clientHeight + 1 && fs > 15) { fs--; lh = Math.round(fs * 1.3); set(); }
+  m.textContent = ''; s.classList.remove('on');
+}
   function openLetter() {
     if (typer) return; opened = true; $('env').classList.remove('on'); $('btn').classList.remove('pulse'); openOv('letter');
-    var m = $('msg'), s = $('sig'), i = 0; m.textContent = ''; s.classList.remove('on');
+    var m = $('msg'), s = $('sig'), i = 0; fitLetter();
     typer = setInterval(function () {
-      m.textContent = MESSAGE.slice(0, ++i);
+      m.textContent = MESSAGE.slice(0, ++i); $('lp').scrollTop = $('lp').scrollHeight;
       if (i === 1 || i % 12 === 0) tone(SC[(i / 12 | 0) % 5] / 2, .5, .03, 'triangle');
       if (i >= MESSAGE.length) { clearInterval(typer); s.classList.add('on'); }
     }, 32);
