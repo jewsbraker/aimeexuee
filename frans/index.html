@@ -80,6 +80,12 @@
   .lan .bx { position: relative; width: 58px; height: 74px; margin: 0 auto; border-radius: 16px 16px 12px 12px; background: radial-gradient(ellipse at 50% 60%, #fff6c8 0%, #ffd45a 40%, #ff9a2e 100%); border: 3px solid #fff3c4; box-shadow: 0 0 22px #ffd45a, 0 0 60px #ff9a2e, 0 0 110px #ff9a2e88; }
   .lan .bx::before, .lan .bx::after { content: ""; position: absolute; left: 50%; transform: translateX(-50%); width: 36px; height: 8px; border-radius: 4px; background: #b8641a; }
   .lan .bx::before { top: -9px; } .lan .bx::after { bottom: -9px; }
+  .lan .bx { animation: geter .18s steps(2, end) infinite; }
+  @keyframes geter {
+    0%   { transform: translate(-1.5px, 0) rotate(-3deg); }
+    50%  { transform: translate(1.5px, -1px) rotate(3deg); }
+    100% { transform: translate(-1px, 1px) rotate(-2deg); }
+  }
   .lan .tx { margin: 14px auto 0; width: max-content; max-width: 140px; padding: 6px 12px; border-radius: 14px; background: #1c0e38; border: 2px solid #ffd45a; font: 600 13px/1.3 "Fredoka", sans-serif; color: #fff3d6; box-shadow: 0 0 14px #ffd45a77; }
   @keyframes lanup { to { transform: translateY(-125vh); } }
   @keyframes lsw { from { transform: translateX(-16px); } to { transform: translateX(16px); } }
@@ -98,6 +104,11 @@
     #hint { font-size: 13px; padding: 6px 12px; }
   }
   @media (prefers-reduced-motion: reduce) { .show #t1 span { animation: rise .01s forwards; } #btn.pulse { animation: none; } }
+
+.paper { max-height: 90vh; max-height: 90dvh; padding-top: var(--lh); background-attachment: local; }
+.paper p { font-size: var(--fs, 26px); line-height: var(--lh); }
+.paper .to { margin-bottom: 0; }
+@media (max-width: 420px), (max-height: 700px) { .paper p { font-size: var(--fs, 19px); } }
 </style>
 </head>
 <body>
@@ -118,15 +129,15 @@
 <script>
 (function () {
   /* ===== UBAH BAGIAN INI SESUKA HATI ===== */
-  var NAME = 'Owen Orlando';
-  var DEGREE = ', S.Kom.';
+  var NAME = 'Fransiskus Hartono';
+  var DEGREE = ', S.M.';
   var SHOWN = NAME; /* nama di plakat buket; berubah jadi ada gelar setelah 5 bunga disentuh */
-  var NICK = 'wenwen';
+  var NICK = 'Fransiskus';
   var FROM = 'From: The Best Person 2nd';
-  var MESSAGE = 'Selamat wisuda, owenng! Akhirnya satu perjalanan panjang selesai juga. Semoga semua pengalaman selama kuliah bisa jadi bekal buat perjalanan berikutnya.\n\nSemoga setelah ini makin banyak kesempatan baik yang datang, hal-hal yang kamu impikan satu per satu tercapai, dan tetap bisa menikmati setiap prosesnya.\n\nCongratulations on your graduation! Proud of you.';
-  var WORDS = ['Selamat ya!', 'Kamu hebat', 'Kerja kerasmu terbayar', 'Akhirnya wisuda!', 'Kamu keren banget', 'Semangat terus ya', 'Bangga sama kamu', 'Dunia menunggumu', 'Semoga sukses selalu', 'Selamat, Sarjana orang mantapp 🫰'];
+  var MESSAGE = 'Selamat wisuda, Franss! Akhirnya satu perjalanan panjang selesai juga. Semoga semua pengalaman selama kuliah bisa jadi bekal buat perjalanan berikutnya.\n\nSemoga setelah ini makin banyak kesempatan baik yang datang, hal-hal yang kamu impikan satu per satu tercapai, dan tetap bisa menikmati setiap prosesnya.\n\nCongratulations on your graduation! Proud of you.';
+  var WORDS = ['Selamat ya!', 'Kamu hebat', 'Kerja kerasmu terbayar', 'Akhirnya wisuda!', 'Kamu keren banget', 'Semangat terus ya', 'Bangga sama kamu', 'Dunia menunggumu', 'Semoga sukses selalu', 'Selamat, Sarjana Manajemen 🫰'];
   var WISHES = ['Semoga sehat selalu', 'Karier yang cerah', 'Bahagia setiap hari', 'Semua mimpimu tercapai'];
-  var AWARDS = ['The Best AMD', 'The Best Mentor', 'The Best Person in the World'];
+  var AWARDS = ['Sarjana Manajemen', 'The Best Mentor N AMDD', 'The No 1st Best Person in the World'];
   var PHOTOS = []; /* contoh: [{ src: 'foto1.jpg', cap: 'Kenangan kita' }] */
   /* ======================================= */
 
@@ -258,7 +269,7 @@
   box(.02, .3, .02, '#f3d9a4', 0, -.15, 0, tag);
   var hm = new THREE.Mesh(new THREE.ExtrudeGeometry(hs, { depth: .06, bevelEnabled: false }), M('#ffd54a')); hm.position.set(0, -.5, 0); tag.add(hm);
 
-  /* bunga */
+  /* brokoli */
   var hit = [], flowers = [], sway = [], UP = new THREE.Vector3(0, 1, 0);
   var dip = new THREE.Group(); dip.position.set(-1.7, .22, .9); dip.rotation.y = .6; root.add(dip);
   cyl(.17, 1.1, '#fff3d6', 0, 0, 0, dip, 16).rotation.z = Math.PI / 2;
@@ -271,36 +282,26 @@
   }
   var EYE = new THREE.SphereGeometry(1, 10, 8), studS = new THREE.CylinderGeometry(.075, .075, .07, 12);
   function sstud(c, x, y, z, p) { var m = new THREE.Mesh(studS, M(c)); m.position.set(x, y, z); p.add(m); return m; }
-  function face(head, y) {
-    [-1, 1].forEach(function (s) {
-      var e = new THREE.Mesh(EYE, M('#2a1a3a')); e.scale.set(.05, .03, .065); e.position.set(s * .13, y, -.07); head.add(e);
-      var h = new THREE.Mesh(EYE, M('#ffffff')); h.scale.set(.017, .014, .017); h.position.set(s * .13 - .015, y + .022, -.09); head.add(h);
-      cyl(.06, .012, '#ff8fb0', s * .22, y, .05, head, 14);
+  function broccoliHead(head) {
+    /* batang pucat */
+    cyl(.09, .55, '#c9e8a8', 0, .2, 0, head, 12);
+    /* kuntum brokoli: [x, y, z, radius] */
+    var fl = [
+      [0, .78, 0, .34], [.22, .62, .14, .24], [-.22, .64, .12, .25], [.12, .6, -.24, .25],
+      [-.14, .6, -.22, .24], [.32, .5, -.06, .2], [-.32, .5, .02, .2], [0, .52, .32, .22],
+      [.04, .5, -.34, .2], [.2, .7, -.2, .22], [-.2, .72, -.18, .2]
+    ];
+    var greens = ['#3f8f4a', '#5aa862', '#2f7a3e'];
+    fl.forEach(function (f, i) {
+      var m = new THREE.Mesh(PET, M(greens[i % greens.length]));
+      m.scale.setScalar(f[3]); m.position.set(f[0], f[1], f[2]); head.add(m);
     });
-    var sm = new THREE.Mesh(new THREE.TorusGeometry(.08, .02, 6, 18, Math.PI), M('#c4476b'));
-    sm.rotation.x = Math.PI / 2; sm.position.set(0, y, -.02); head.add(sm);
-  }
-  function legoBloom(head, type, c) {
-    var i, a, o, dc = type === 'daisy' ? '#ffd54a' : type === 'tulip' ? '#fff0c2' : '#ffe9a8';
-    cyl(.34, .22, dc, 0, .11, 0, head, 28); face(head, .22);
-    if (type === 'rose') {
-      for (i = 0; i < 8; i++) { a = i / 8 * 6.2832 + .2; o = cyl(.25, .16, c[1], Math.cos(a) * .78, 0, Math.sin(a) * .78, head, 20); sstud(c[1], o.position.x, .11, o.position.z, head); }
-      for (i = 0; i < 6; i++) { a = i / 6 * 6.2832; o = cyl(.24, .24, c[0], Math.cos(a) * .52, .08, Math.sin(a) * .52, head, 20); sstud(c[0], o.position.x, .235, o.position.z, head); }
-    } else if (type === 'daisy') {
-      for (i = 0; i < 10; i++) { a = i / 10 * 6.2832; o = new THREE.Mesh(EYE, M(c[0])); o.scale.set(.34, .09, .16); o.position.set(Math.cos(a) * .66, .02, Math.sin(a) * .66); o.rotation.y = -a; head.add(o); }
-    } else {
-      for (i = 0; i < 6; i++) {
-        a = i / 6 * 6.2832; var g = new THREE.Group(); g.rotation.y = -a; head.add(g);
-        var br = box(.62, .16, .3, c[i % 2], .64, .1, 0, g); br.rotation.z = .3;
-        sstud(c[i % 2], -.14, .115, 0, br); sstud(c[i % 2], .14, .115, 0, br);
-      }
-    }
   }
   function orient(th, ph) {
     var g = new THREE.Group();
     g.quaternion.setFromUnitVectors(UP, new THREE.Vector3(Math.sin(th) * Math.cos(ph), Math.cos(th), Math.sin(th) * Math.sin(ph))); return g;
   }
-  function flower(th, ph, L, type, c, size) {
+  function flower(th, ph, L, size) {
     var i = flowers.length, o = new THREE.Group(), pr = ph * D;
     o.position.set(rnd(-.15, .15), 2.7, rnd(-.15, .15)); bq.add(o);
     var inn = orient(th * D, pr); o.add(inn);
@@ -309,19 +310,19 @@
     var lb = box(.5, .05, .24, '#6fcf7f', .3, 0, 0, lf); lb.rotation.z = .35; sstud('#6fcf7f', .22, .06, 0, lb);
     var head = new THREE.Group(); head.position.y = L; head.scale.setScalar(size * .85); inn.add(head);
     head.quaternion.setFromAxisAngle(new THREE.Vector3(Math.sin(pr), 0, -Math.cos(pr)), (th === 0 ? 72 : 42) * D).multiply(new THREE.Quaternion().setFromAxisAngle(UP, Math.PI / 2 - pr));
-    legoBloom(head, type, c);
+    broccoliHead(head);
     head.traverse(function (m) { if (m.isMesh) { m.userData.fi = i; hit.push(m); } });
     flowers.push({ o: o, ph: rnd(0, 6.28), amp: rnd(.02, .045), pp: 0, pv: 0, w: 0, d: .9 + i * .17 });
   }
-  flower(0, 90, 3.4, 'rose', ['#e8789f', '#f7b3c8'], 1.25);
-  flower(20, 0, 2.8, 'daisy', ['#ffffff'], 1.15);
-  flower(20, 120, 2.8, 'rose', ['#f2a47a', '#fbd0b4'], 1.05);
-  flower(20, 240, 2.8, 'tulip', ['#ff7b6b', '#ffa093'], 1.15);
-  flower(38, 60, 2.1, 'tulip', ['#f4c542', '#ffe28a'], 1.1);
-  flower(38, 150, 2.2, 'rose', ['#c93a5c', '#e5708b'], 1);
-  flower(38, 240, 2.1, 'daisy', ['#ffffff'], 1);
-  flower(38, 330, 2.2, 'rose', ['#b08be0', '#d9c2f5'], 1.05);
-  flower(50, 100, 1.55, 'daisy', ['#ffe7a3'], .9);
+  flower(0, 90, 3.4, 1.25);
+  flower(20, 0, 2.8, 1.15);
+  flower(20, 120, 2.8, 1.05);
+  flower(20, 240, 2.8, 1.15);
+  flower(38, 60, 2.1, 1.1);
+  flower(38, 150, 2.2, 1);
+  flower(38, 240, 2.1, 1);
+  flower(38, 330, 2.2, 1.05);
+  flower(50, 100, 1.55, .9);
   /* kertas pembungkus, pita & plakat bisa dipencet */
   [body, pg].forEach(function (g) { g.traverse(function (m) { if (m.isMesh) { m.userData.fi = 11; hit.push(m); } }); });
 
@@ -467,7 +468,7 @@
     parts.push({ x: rnd(W * .4, W), y: rnd(0, H * .25), vx: -9, vy: 4.2, g: 0, f: 1, hue: 50, life: 1, decay: .02, sz: 2.6 });
   }, 7000);
 
-  /* tombol bawah terkunci sampai 5 bunga dipencet */
+  /* tombol bawah terkunci sampai 5 brokoli dipencet */
   var locked = true;
   function setLock(on) {
     locked = on;
@@ -481,7 +482,7 @@
 
   /* ---------- aksi ---------- */
   var jy = 0, jv = 0, sq = 0, sqv = 0, finaleDone = false, typer = null, dawned = false, opened = false, envT = null, envSoon = false;
-  function updateHint() { hint.textContent = got < TOTAL ? 'Sentuh 5 bunga dulu ya (' + got + ' dari ' + TOTAL + ')' : 'Semua sudah kamu sentuh ✨ Tangkap topi yang melayang!'; }
+  function updateHint() { hint.textContent = got < TOTAL ? 'Sentuh 5 brokoli dulu ya (' + got + ' dari ' + TOTAL + ')' : 'Semua sudah kamu sentuh ✨ Tangkap topi yang melayang!'; }
   updateHint(); resize(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(resize);
   function celebrate(x, y, big) {
     title.classList.add('show'); tone(98, .6, .09);
@@ -499,8 +500,8 @@
   }
   function finale() {
     if (finaleDone) return; finaleDone = true; setLock(false); celebrate(W / 2, H * .5, true);
-    /* nama di plakat buket berganti jadi ada gelar S.Ds. */
-    setTimeout(function () { SHOWN = NAME + DEGREE; plaque(); chime(9); floatWord('Sarjana Desain! 🎓', W / 2, H * .55); }, 3000);
+    /* nama di plakat buket berganti jadi ada gelar S.M. */
+    setTimeout(function () { SHOWN = NAME + DEGREE; plaque(); chime(9); floatWord('Sarjana Manajemen! 🎓', W / 2, H * .55); }, 3000);
     [0, 2, 4, 5, 7, 9].forEach(function (n, k) { setTimeout(function () { chime(n); }, 300 + k * 200); });
     setTimeout(function () { textBurst('SELAMAT', H * .3); }, 700); setTimeout(function () { textBurst('WISUDA!', H * .3); }, 3000); setTimeout(function () { $('pn').classList.remove('on'); }, 5400);
     setTimeout(function () { title.classList.add('hide'); }, 400); $('btn').classList.add('pulse'); setTimeout(openLetter, 5600);
@@ -527,12 +528,12 @@
     floatWord('+1 🎓 (' + caught + ')', x, y - 20); burstPetals(x, y, 10, true);
     if (caught % 10 === 0) {
       celebrate(x, y, true);
-      setTimeout(function () { textBurst('AIMEE HEBAT', H * .3); }, 600);
+      setTimeout(function () { textBurst('FRANS HEBAT', H * .3); }, 600);
       setTimeout(function () { $('pn').classList.remove('on'); }, 3200);
     }
   }
 
-  var HUGS = ['Selamat, Sarjana KO AIMEEE 🫰'], hugI = 0;
+  var HUGS = ['Selamat, Sarjana Manajemen 🫰'], hugI = 0;
   function hugBouquet(x, y) {
     title.classList.add('show');
     [0, 4, 7, 9].forEach(function (n, k) { setTimeout(function () { chime(n); }, k * 110); });
@@ -555,11 +556,20 @@
   });
   function showEnv() { if (!opened && finaleDone) $('env').classList.add('on'); }
   envT = setTimeout(showEnv, 9000);
+  function fitLetter() {
+    var p = $('lp'), m = $('msg'), s = $('sig'), small = innerWidth < 420 || innerHeight < 700;
+    var fs = small ? 19 : 26, lh = Math.round(fs * 1.3);
+    m.textContent = MESSAGE; s.classList.add('on');
+    function set() { p.style.setProperty('--fs', fs + 'px'); p.style.setProperty('--lh', lh + 'px'); }
+    set();
+    while (p.scrollHeight > p.clientHeight + 1 && fs > 15) { fs--; lh = Math.round(fs * 1.3); set(); }
+    m.textContent = ''; s.classList.remove('on');
+  }
   function openLetter() {
     if (typer) return; opened = true; $('env').classList.remove('on'); $('btn').classList.remove('pulse'); openOv('letter');
-    var m = $('msg'), s = $('sig'), i = 0; m.textContent = ''; s.classList.remove('on');
+    var m = $('msg'), s = $('sig'), i = 0; fitLetter();
     typer = setInterval(function () {
-      m.textContent = MESSAGE.slice(0, ++i);
+      m.textContent = MESSAGE.slice(0, ++i); $('lp').scrollTop = $('lp').scrollHeight;
       if (i === 1 || i % 12 === 0) tone(SC[(i / 12 | 0) % 5] / 2, .5, .03, 'triangle');
       if (i >= MESSAGE.length) { clearInterval(typer); s.classList.add('on'); }
     }, 32);
@@ -571,12 +581,41 @@
     do { lane = (Math.random() * 3) | 0; } while (lane === lastLane); lastLane = lane;
     return Math.round(lo + (hi - lo) * lane / 2);
   }
+  /* efek suara lentera saat di-tap: whoosh + denting */
+  function lanternSfx() {
+    if (!snd) return;
+    var a = ac(); if (!a) return;
+    var t = a.currentTime;
+
+    /* whoosh: nada naik cepat */
+    var o = a.createOscillator(), g = a.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(600, t);
+    o.frequency.exponentialRampToValueAtTime(1800, t + .25);
+    g.gain.setValueAtTime(.0001, t);
+    g.gain.exponentialRampToValueAtTime(.18, t + .02);
+    g.gain.exponentialRampToValueAtTime(.0001, t + .5);
+    o.connect(g); g.connect(a.destination);
+    o.start(t); o.stop(t + .5);
+
+    /* denting kecil berurutan */
+    [1568, 2093, 2637].forEach(function (f, i) {
+      var s = a.currentTime + .1 + i * .07;
+      var d = a.createOscillator(), dg = a.createGain();
+      d.type = 'triangle';
+      d.frequency.value = f;
+      dg.gain.setValueAtTime(.06, s);
+      dg.gain.exponentialRampToValueAtTime(.0001, s + .35);
+      d.connect(dg); dg.connect(a.destination);
+      d.start(s); d.stop(s + .35);
+    });
+  }
   function lantern(txt, delay) {
     setTimeout(function () {
       var e = document.createElement('div'); e.className = 'lan'; e.style.left = lanePos() + 'px'; e.style.setProperty('--t', rnd(16, 19).toFixed(1) + 's');
       e.innerHTML = '<div class="sw"><div class="bx"></div><div class="tx"></div></div>'; e.querySelector('.tx').textContent = txt;
       e.addEventListener('click', function () {
-        var r = e.getBoundingClientRect(); chime(7); buzz(25);
+        var r = e.getBoundingClientRect(); lanternSfx(); buzz(25);
         burstPetals(r.left + 30, r.top + 40, 25, true); launch(r.left + 30, Math.max(H * .12, r.top)); e.remove();
       });
       document.body.appendChild(e); setTimeout(function () { e.remove(); }, 21000);
@@ -619,7 +658,7 @@
     if (e.type === 'pointerup' && moved < 10) {
       var i = pick(e.clientX, e.clientY);
       if (i === -3) catchCap(e.clientX, e.clientY);
-      else if (i === 10) { if (locked) floatWord('Sentuh 5 bunga dulu ya 🔒', e.clientX, e.clientY - 20); else { openOv('cert'); chime(4); } }
+      else if (i === 10) { if (locked) floatWord('Sentuh 5 brokoli dulu ya 🔒', e.clientX, e.clientY - 20); else { openOv('cert'); chime(4); } }
       else if (i === 11) hugBouquet(e.clientX, e.clientY);
       else if (i >= 0) tapTarget(i, e.clientX, e.clientY);
       else celebrate(e.clientX, e.clientY, false);

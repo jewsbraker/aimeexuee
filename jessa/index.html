@@ -118,15 +118,15 @@
 <script>
 (function () {
   /* ===== UBAH BAGIAN INI SESUKA HATI ===== */
-  var NAME = 'Jessalyn ';
+  var NAME = 'Jessalyn Shannie';
   var DEGREE = ', S.Psi.';
   var SHOWN = NAME; /* nama di plakat buket; berubah jadi ada gelar setelah 5 bunga disentuh */
-  var NICK = 'jesaa';
+  var NICK = 'jessa';
   var FROM = 'From: The Best Person 2nd';
-  var MESSAGE = 'Selamat wisuda, Aimee! Akhirnya satu perjalanan panjang selesai juga. Semoga semua pengalaman selama kuliah bisa jadi bekal buat perjalanan berikutnya.\n\nSemoga setelah ini makin banyak kesempatan baik yang datang, hal-hal yang kamu impikan satu per satu tercapai, dan tetap bisa menikmati setiap prosesnya.\n\nCongratulations on your graduation! Proud of you.';
-  var WORDS = ['Selamat ya!', 'Kamu hebat', 'Kerja kerasmu terbayar', 'Akhirnya wisuda!', 'Kamu keren banget', 'Semangat terus ya', 'Bangga sama kamu', 'Dunia menunggumu', 'Semoga sukses selalu', 'Selamat, Sarjana KO AIMEEE 🫰'];
+  var MESSAGE = 'Selamat wisuda, Jessa! Akhirnya satu perjalanan panjang selesai juga. Semoga semua pengalaman selama kuliah bisa jadi bekal buat perjalanan berikutnya.\n\nSemoga setelah ini makin banyak kesempatan baik yang datang, hal-hal yang kamu impikan satu per satu tercapai, dan tetap bisa menikmati setiap prosesnya.\n\nCongratulations on your graduation! Proud of you.';
+  var WORDS = ['Selamat ya!', 'Kamu hebat', 'Kerja kerasmu terbayar', 'Akhirnya wisuda!', 'Kamu keren banget', 'Semangat terus ya', 'Bangga sama kamu', 'Dunia menunggumu', 'Semoga sukses selalu', 'Selamat, Sarjana Psikologi 🫰'];
   var WISHES = ['Semoga sehat selalu', 'Karier yang cerah', 'Bahagia setiap hari', 'Semua mimpimu tercapai'];
-  var AWARDS = ['The Best AMD', 'The Best Mentor', 'The Best Person in the World'];
+  var AWARDS = ['Sarjana Psikologi', 'The Best AMD', 'The Best Person in the World'];
   var PHOTOS = []; /* contoh: [{ src: 'foto1.jpg', cap: 'Kenangan kita' }] */
   /* ======================================= */
 
@@ -499,8 +499,8 @@
   }
   function finale() {
     if (finaleDone) return; finaleDone = true; setLock(false); celebrate(W / 2, H * .5, true);
-    /* nama di plakat buket berganti jadi ada gelar S.Ds. */
-    setTimeout(function () { SHOWN = NAME + DEGREE; plaque(); chime(9); floatWord('Sarjana Desain! 🎓', W / 2, H * .55); }, 3000);
+    /* nama di plakat buket berganti jadi ada gelar S.Psi. */
+    setTimeout(function () { SHOWN = NAME + DEGREE; plaque(); chime(9); floatWord('Sarjana Psikologi! 🎓', W / 2, H * .55); }, 3000);
     [0, 2, 4, 5, 7, 9].forEach(function (n, k) { setTimeout(function () { chime(n); }, 300 + k * 200); });
     setTimeout(function () { textBurst('SELAMAT', H * .3); }, 700); setTimeout(function () { textBurst('WISUDA!', H * .3); }, 3000); setTimeout(function () { $('pn').classList.remove('on'); }, 5400);
     setTimeout(function () { title.classList.add('hide'); }, 400); $('btn').classList.add('pulse'); setTimeout(openLetter, 5600);
@@ -527,12 +527,12 @@
     floatWord('+1 🎓 (' + caught + ')', x, y - 20); burstPetals(x, y, 10, true);
     if (caught % 10 === 0) {
       celebrate(x, y, true);
-      setTimeout(function () { textBurst('AIMEE HEBAT', H * .3); }, 600);
+      setTimeout(function () { textBurst('JESSA HEBAT', H * .3); }, 600);
       setTimeout(function () { $('pn').classList.remove('on'); }, 3200);
     }
   }
 
-  var HUGS = ['Selamat, Sarjana KO AIMEEE 🫰'], hugI = 0;
+  var HUGS = ['Selamat, Sarjana Psikologi 🫰'], hugI = 0;
   function hugBouquet(x, y) {
     title.classList.add('show');
     [0, 4, 7, 9].forEach(function (n, k) { setTimeout(function () { chime(n); }, k * 110); });
