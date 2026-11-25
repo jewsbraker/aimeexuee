@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Baca dan analisis seluruh struktur proyek Laravel ini—khususnya folder `resources/views/`, `routes/web.php`, `app/Models/`, dan `database/seeders/`—lalu rangkum seluruh informasi UI dan datanya menjadi satu ringkasan terstruktur agar bisa dikonversi menjadi aplikasi demo statis 1 file (`index.html`) untuk GitHub Pages:
+
+1. **Identitas Visual & Layout Utama (`resources/views/layouts/`):**
+   - Sebutkan palet warna utama (kode hex / class Tailwind CSS), font yang dipakai, dan struktur navigasi (navbar customer, sidebar admin, footer).
+   - Sertakan potongan HTML/Tailwind dari komponen utama (header, kartu produk, tombol, badge).
+
+2. **Daftar Halaman & Fitur Utama (`routes/web.php` & `resources/views/`):**
+   - Rinci seluruh tampilan halaman yang ada untuk sisi **Customer/Storefront** (misalnya: Beranda/Katalog Produk, Detail Produk dengan pilihan `ProductUnit` & `ProductPrice`, Keranjang `Cart`, Wishlist, Checkout, Riwayat Transaksi, Broadcast/Promo) dan sisi **Admin** (Dashboard, Kasir POS, Manajemen Produk & Stok, Manajemen Kategori, Riwayat Penjualan/Transaksi).
+   - Jelaskan alur interaksi di setiap halaman tersebut (misal: cara memilih satuan unit produk di POS/katalog, perhitungan total & kembalian di kasir POS, filter kategori, pencarian produk).
+
+3. **Data Dummy Asli dari Seeder (`database/seeders/`):**
+   - Ekstrak semua daftar kategori (`Category`), produk (`Product`), satuan unit (`ProductUnit`), harga (`ProductPrice`), dan akun user (`UserSeeder`) yang ada di seeder menjadi format JSON siap pakai.
+
+4. **Aset Gambar (`public/`):**
+   - Daftar path gambar lokal yang dipakai (logo, banner, foto produk) beserta fallback/placeholder jika gambar tidak tersedia.
+
+Sajikan seluruh hasil ekstraksi di atas secara lengkap dan rapi dalam satu respons tanpa ada bagian yang dipotong.</p>
+</body>
+</html>
