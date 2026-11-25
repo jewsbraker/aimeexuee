@@ -913,6 +913,148 @@ body{font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
   #toastStack{top:72px;right:16px;left:16px}
   .pl-toast{max-width:none;min-width:0}
 }
+/* ===== PERBAIKAN LAYOUT MOBILE ===== */
+@media (max-width:768px){
+  .shop{overflow-x:clip}
+
+  /* Navbar: baris 1 = logo + ikon, baris 2 = search */
+  .shop .nav{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"logo icons" "search search";align-items:center;height:auto;padding:.6rem 16px;gap:.5rem 0}
+  .shop .nav>*{min-width:0}
+  .shop .nav-logo{grid-area:logo}
+  .shop .nav-spacer{display:none}
+  .shop .nav-icons{grid-area:icons;justify-self:end;flex-wrap:nowrap}
+  .shop .nav-search{grid-area:search;display:flex;width:100%;max-width:none}
+  .shop .nav-search input{min-width:0;width:100%}
+  .shop .nav-search-btn{flex-shrink:0}
+  .shop .notif-dropdown{position:fixed;top:calc(100% + 4px);left:12px;right:12px;width:auto}
+
+  /* Beranda */
+  .shop .hero{min-height:auto}
+  .shop .hero-right{min-height:220px}
+  .shop .hero-actions{flex-wrap:wrap;gap:1rem}
+  .shop .hero-link{margin-left:0 !important}
+  .shop .hero-actions .btn-lg{padding:.9rem 1.5rem !important;font-size:.95rem !important}
+  .shop .kategori-grid{grid-template-columns:repeat(2,1fr)}
+  .shop .kategori-icon-wrap svg{width:90px;height:90px}
+  .shop .kategori-info{padding:1rem .85rem}
+  .shop .kategori-name{font-size:1.25rem}
+  .shop .produk-card{padding:1.25rem}
+  .shop .btn-promo{white-space:normal;justify-content:center;text-align:center}
+
+  /* Katalog: kategori jadi chip geser horizontal, produk 2 kolom */
+  .pg-catalog .shop-main{min-width:0}
+  .pg-catalog .sidebar-card{padding:1rem;margin-bottom:.75rem}
+  .pg-catalog .sidebar-title{margin-bottom:.75rem}
+  .pg-catalog .filter-list{flex-direction:row;overflow-x:auto;gap:.5rem;padding-bottom:.35rem}
+  .pg-catalog .filter-list li{flex:0 0 auto}
+  .pg-catalog .filter-item{white-space:nowrap;gap:.5rem;padding:.4rem .8rem;border:1px solid rgba(242,239,230,.12);border-radius:999px}
+  .pg-catalog .filter-item.active{border-color:var(--orange)}
+  .pg-catalog .product-grid{grid-template-columns:repeat(2,1fr) !important;gap:.6rem !important}
+  .pg-catalog .prod-img{padding:.25rem}
+  .pg-catalog .prod-body{padding:.75rem}
+  .pg-catalog .prod-name{font-size:.8rem}
+  .pg-catalog .prod-price{font-size:1.1rem}
+
+  /* Detail produk */
+  .pg-show .detail-grid-layout{margin-bottom:2rem}
+  .pg-show .main-preview-box{padding:.5rem}
+  .pg-show .gallery-thumbs-row{gap:.5rem}
+  .pg-show .prod-main-title{font-size:1.9rem}
+  .pg-show .prod-rating-meta{flex-wrap:wrap;gap:.4rem .9rem;margin-bottom:1.25rem}
+  .pg-show .price-plate{padding:1.1rem;margin-bottom:1.25rem}
+  .pg-show .price-now{font-size:2.2rem}
+  .pg-show .technical-specs-table td:first-child{width:45%}
+
+  /* Keranjang */
+  .pg-cart .cart-page-title{font-size:1.8rem}
+  .pg-cart .cart-item-card{grid-template-columns:80px 1fr;gap:.85rem;padding:1rem;align-items:start}
+  .pg-cart .cart-item-card>input[type=checkbox]{display:none}
+  .pg-cart .cart-item-card[style]{display:none}
+  .pg-cart .cart-item-img-box{width:80px;height:80px}
+  .pg-cart .cart-item-details{min-width:0}
+  .pg-cart .ci-meta-name{font-size:.95rem}
+  .pg-cart .summary-card{padding:1.25rem}
+
+  /* Checkout & invoice */
+  .pg-checkout .co-section{padding:1.1rem}
+  .pg-invoice .co-section{padding:1.25rem !important}
+
+  /* Wishlist */
+  .pg-wishlist .wishlist-title{font-size:1.8rem}
+  .pg-wishlist .wishlist-grid{grid-template-columns:repeat(2,1fr);gap:.75rem}
+  .pg-wishlist .wish-body{padding:.85rem}
+  .pg-wishlist .wish-footer{flex-wrap:wrap;gap:.5rem}
+  .pg-wishlist .wish-price{font-size:.9rem}
+
+  /* Transaksi, notifikasi, akun, login */
+  .pg-transactions .tx-title,.pg-notif .broadcast-title{font-size:1.8rem}
+  .pg-transactions .tx-card{gap:.75rem}
+  .pg-transactions .tx-total,.pg-transactions .tx-date{text-align:left}
+  .pg-notif .broadcast-header{flex-wrap:wrap;gap:.75rem}
+  .pg-notif .broadcast-card{padding:1.1rem}
+  .pg-profile .account-layout{gap:1.5rem}
+  .pg-profile .profile-form-card{padding:1.25rem}
+  .pg-login .auth-wrapper,.pg-register .auth-wrapper,.pg-forgot .auth-wrapper,.pg-reset .auth-wrapper{padding:1rem}
+  .pg-login .auth-card,.pg-register .auth-card,.pg-forgot .auth-card,.pg-reset .auth-card{padding:2rem 1.25rem}
+
+  /* Tombol chat AI jangan menutupi konten */
+  .shop .ai-fab{width:52px;height:52px;bottom:16px;right:16px}
+  .shop .footer-mini{padding-bottom:5rem}
+  .shop .ai-modal-content{width:94%;height:75vh}
+}
+
+/* ===== FIX KONTEN KEPOTONG DI MOBILE ===== */
+@media (max-width:1024px){
+  .pg-catalog .shop-layout{grid-template-columns:minmax(0,1fr) !important}
+  .pg-catalog .sidebar{min-width:0;max-width:100%}
+}
+@media (max-width:768px){
+  .shop .detail-grid-layout,
+  .shop .cart-layout,
+  .shop .checkout-layout,
+  .shop .account-layout,
+  .shop .shop-layout{grid-template-columns:minmax(0,1fr) !important}
+
+  .shop .detail-grid-layout>*,
+  .shop .cart-layout>*,
+  .shop .checkout-layout>*,
+  .shop .account-layout>*,
+  .shop .shop-layout>*{min-width:0}
+
+  .pg-catalog .filter-list,
+  .pg-catalog .double-range-wrapper,
+  .pg-catalog .price-range-container{max-width:100%}
+
+  /* Rekomendasi produk serupa di detail produk: 2 kolom ringkas seperti katalog */
+  .pg-show .recs-section{margin-top:2rem !important}
+  .pg-show .recs-title{font-size:1.25rem !important;margin-bottom:1rem !important}
+  .pg-show .recs-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:.6rem !important}
+  .pg-show .rec-card{padding:.65rem !important;min-width:0}
+  .pg-show .rec-img-box{margin-bottom:.5rem !important}
+  .pg-show .rec-name{font-size:.78rem !important;margin-bottom:.4rem !important}
+  .pg-show .rec-price{font-size:.85rem !important}
+  .pg-show .rec-cart-btn{width:28px !important;height:28px !important}
+
+  /* Invoice / Nota mobile */
+  .pg-invoice .co-section{margin:1rem auto !important;padding:1.15rem !important}
+  .pg-invoice .inv-header{flex-direction:column;gap:1rem !important;margin-bottom:1.5rem !important}
+  .pg-invoice .inv-header-right{text-align:left !important;width:100%}
+  .pg-invoice .inv-meta{flex-direction:column;gap:1rem !important;margin-bottom:1.5rem !important;padding-bottom:1.15rem !important}
+  .pg-invoice .inv-meta-right{text-align:left !important}
+  .pg-invoice .inv-table{font-size:.8rem;margin-bottom:1.5rem !important}
+  .pg-invoice .inv-table th,.pg-invoice .inv-table td{padding:.65rem .35rem !important}
+  .pg-invoice .inv-num{white-space:nowrap}
+  .pg-invoice .inv-summary{width:100% !important}
+  .pg-invoice .inv-footer{margin-top:1.5rem !important;padding-top:1.15rem !important;font-size:.78rem !important;line-height:1.6 !important}
+  .pg-invoice .inv-actions{flex-direction:column}
+  .pg-invoice .inv-actions .btn{width:100%;justify-content:center}
+}
+@media print{
+  .shop .nav,.shop .breadcrumb,.shop .ai-fab,.shop .footer-mini,.pg-invoice .inv-actions{display:none !important}
+  body,.shop{background:#fff !important;color:#111 !important}
+  .pg-invoice .co-section{background:#fff !important;color:#111 !important;border:1px solid #ddd !important;margin:0 !important;max-width:100% !important;box-shadow:none !important}
+  .pg-invoice *{color:#111 !important;border-color:#ddd !important}
+}
 </style>
 </head>
 <body>
@@ -920,6 +1062,7 @@ body{font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
 <!-- Library yang juga dipakai view asli (admin/dashboard.blade.php) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script>
 'use strict';
 /* ==========================================================================
@@ -1144,6 +1287,7 @@ const PH = {
 };
 const imgSrc = path => !path ? null : (String(path).startsWith('data:') ? path : (IMAGE_BASE ? IMAGE_BASE + path : null));
 const firstImg = p => p && p.images && p.images.length ? imgSrc(p.images[0]) : null;
+const realImages = p => (p.images || []).map(imgSrc).filter(Boolean);
 // <img> dengan fallback placeholder bila gagal dimuat
 function imgTag(src, alt, ph, style = '', cls = '') {
   if (!src) return ph;
@@ -1581,7 +1725,6 @@ function pageCategory(q, slug) {
 }
 
 /* ---------- show.blade.php (CatalogController@show) ---------- */
-const realImages = p => (p.images || []).map(imgSrc).filter(Boolean);
 function pageProduct(q, id) {
   const p = findProduct(id); if (!p) return page404();
   const u = me(), lvl = tierLevel();
@@ -1652,18 +1795,18 @@ function pageProduct(q, id) {
         </table>
       </div>
     </div>
-    ${recs.length ? `<div style="margin-top: 3rem;">
-      <h2 class="sec-title" style="font-size: 1.5rem; margin-bottom: 1.5rem;">Produk Serupa Lainnya</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">${recs.map(r => `
-        <a href="#/produk/${r.id}" style="text-decoration: none; color: inherit; background: #111110; border: 1px solid rgba(242, 239, 230, 0.05); border-radius: 4px; padding: 1rem; display: flex; flex-direction: column; transition: all 0.2s; height: 100%;">
-          <div style="aspect-ratio: 4/3; background: #151513; border-radius: 2px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; overflow: hidden; padding: 0.25rem;">
+    ${recs.length ? `<div class="recs-section" style="margin-top: 3rem;">
+      <h2 class="sec-title recs-title" style="font-size: 1.5rem; margin-bottom: 1.5rem;">Produk Serupa Lainnya</h2>
+      <div class="recs-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">${recs.map(r => `
+        <a href="#/produk/${r.id}" class="rec-card" style="text-decoration: none; color: inherit; background: #111110; border: 1px solid rgba(242, 239, 230, 0.05); border-radius: 4px; padding: 1rem; display: flex; flex-direction: column; transition: all 0.2s; height: 100%;">
+          <div class="rec-img-box" style="aspect-ratio: 4/3; background: #151513; border-radius: 2px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; overflow: hidden; padding: 0.25rem;">
             ${imgTag(firstImg(r), r.name, PH.icon(50, 0.3, 'var(--gray-mid)'), 'width: 100%; height: 100%; object-fit: contain;')}
           </div>
           <div style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--orange); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.25rem;">${esc(r.brand)}</div>
-          <div style="font-weight: 500; font-size: 0.85rem; color: var(--off-white); line-height: 1.3; margin-bottom: 0.5rem; flex: 1;">${esc(r.name.length > 40 ? r.name.slice(0, 40) + '...' : r.name)}</div>
+          <div class="rec-name" style="font-weight: 500; font-size: 0.85rem; color: var(--off-white); line-height: 1.3; margin-bottom: 0.5rem; flex: 1;">${esc(r.name.length > 40 ? r.name.slice(0, 40) + '...' : r.name)}</div>
           <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
-            <div style="font-family: var(--font-mono); font-size: 0.95rem; font-weight: 600; color: var(--off-white);">${rp(firstPrice(r))}</div>
-            <button type="button" onclick="event.preventDefault(); event.stopPropagation(); addToCart(${r.id}, readQty())" style="width: 32px; height: 32px; background: rgba(232, 82, 26, 0.1); border: 1px solid rgba(232, 82, 26, 0.2); border-radius: 3px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; color: var(--orange);">${ICON.cartSm}</button>
+            <div class="rec-price" style="font-family: var(--font-mono); font-size: 0.95rem; font-weight: 600; color: var(--off-white);">${rp(firstPrice(r))}</div>
+            <button type="button" class="rec-cart-btn" onclick="event.preventDefault(); event.stopPropagation(); addToCart(${r.id}, readQty())" style="width: 32px; height: 32px; background: rgba(232, 82, 26, 0.1); border: 1px solid rgba(232, 82, 26, 0.2); border-radius: 3px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; color: var(--orange);">${ICON.cartSm}</button>
           </div>
         </a>`).join('')}
       </div></div>` : ''}
@@ -1910,44 +2053,144 @@ function pageInvoice(q, inv) {
   const html = `<div class="page-wrapper">
     <div class="breadcrumb"><a href="#/">HOME</a> <span>/</span> <a href="#/transactions">TRANSAKSI</a> <span>/</span> INVOICE</div>
     <div class="co-section" style="background: var(--surface-2); max-width: 800px; margin: 2rem auto; padding: 2.5rem;">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1.5rem;">
+      <div class="inv-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1.5rem;">
         <div><h1 style="font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.05em; color: var(--off-white); margin-bottom: 0.25rem;">PARTLYFE</h1><p style="color: var(--gray-mid); font-size: 0.85rem;">Distributor Sparepart Motor Terpercaya</p></div>
-        <div style="text-align: right;">
+        <div class="inv-header-right" style="text-align: right;">
           <h2 style="font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.05em; color: var(--off-white); margin-bottom: 0.5rem;">INVOICE</h2>
           <p style="font-family: var(--font-mono); color: var(--gray-mid); margin-bottom: 0.5rem;">${esc(t.invoice_number)}</p>
           <span style="display: inline-block; padding: 0.35rem 0.85rem; background: ${color}20; color: ${color}; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">${statusText}</span>
         </div>
       </div>
-      <div style="display: flex; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(242,239,230,0.08);">
+      <div class="inv-meta" style="display: flex; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(242,239,230,0.08);">
         <div>
           <p style="font-size: 0.7rem; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">Ditagihkan Kepada:</p>
           <p style="font-weight: 600; color: var(--off-white); margin-bottom: 0.25rem;">${esc(u.name)}</p>
           <p style="color: var(--gray-mid); font-size: 0.85rem; margin-bottom: 0.15rem;">${esc(u.phone || '-')}</p>
           <p style="color: var(--gray-mid); font-size: 0.85rem;">${esc(u.email)}</p>
         </div>
-        <div style="text-align: right;">
+        <div class="inv-meta-right" style="text-align: right;">
           <p style="font-size: 0.7rem; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">Tanggal Transaksi:</p>
           <p style="color: var(--off-white); font-size: 0.85rem;">${fmtDate(t.created_at, 'd F Y H:i')} WIB</p>
         </div>
       </div>
-      <div style="overflow-x:auto;"><table style="width: 100%; border-collapse: collapse; margin-bottom: 2.5rem;">
+      <div style="overflow-x:auto;"><table class="inv-table" style="width: 100%; border-collapse: collapse; margin-bottom: 2.5rem;">
         <thead><tr style="border-bottom: 1px solid rgba(242,239,230,0.08);"><th ${th('left')}>Nama Barang</th><th ${th('center')}>Qty</th><th ${th('right')}>Harga</th><th ${th('right')}>Subtotal</th></tr></thead>
         <tbody>${detailsOf(t.id).map(d => { const p = findProduct(d.product_id); return `<tr style="border-bottom: 1px solid rgba(242,239,230,0.05);">
           <td style="padding: 1rem 0.5rem; color: var(--off-white);">${esc(p ? p.name : 'Produk tidak tersedia')}</td>
           <td style="padding: 1rem 0.5rem; text-align: center; color: var(--gray-mid);">${d.qty}</td>
-          <td style="padding: 1rem 0.5rem; text-align: right; font-family: var(--font-mono); color: var(--gray-mid);">${rp(d.price)}</td>
-          <td style="padding: 1rem 0.5rem; text-align: right; font-family: var(--font-mono); color: var(--off-white);">${rp(d.qty * d.price)}</td></tr>`; }).join('')}
+          <td class="inv-num" style="padding: 1rem 0.5rem; text-align: right; font-family: var(--font-mono); color: var(--gray-mid);">${rp(d.price)}</td>
+          <td class="inv-num" style="padding: 1rem 0.5rem; text-align: right; font-family: var(--font-mono); color: var(--off-white);">${rp(d.qty * d.price)}</td></tr>`; }).join('')}
         </tbody></table></div>
-      <div style="display: flex; justify-content: flex-end;"><div style="width: 280px; max-width:100%;">
+      <div style="display: flex; justify-content: flex-end;"><div class="inv-summary" style="width: 280px; max-width:100%;">
         <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(242,239,230,0.08);"><span style="color: var(--gray-mid);">Subtotal</span><span style="font-family: var(--font-mono);">${rp(t.total_amount)}</span></div>
         <div style="display: flex; justify-content: space-between; padding: 1.25rem 0; margin-top: 0.5rem; border-top: 2px solid var(--orange);"><span style="font-family: var(--font-display); font-size: 1.2rem; color: var(--off-white);">TOTAL</span><span style="font-family: var(--font-mono); font-size: 1.3rem; color: var(--orange);">${rp(t.total_amount)}</span></div>
       </div></div>
-      <div style="text-align: center; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(242,239,230,0.08); color: var(--gray-mid); font-size: 0.85rem; line-height: 1.8;">
+      <div class="inv-footer" style="text-align: center; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(242,239,230,0.08); color: var(--gray-mid); font-size: 0.85rem; line-height: 1.8;">
         <p style="margin-bottom: 0.25rem;">Terima kasih telah berbelanja di Partlyfe.</p><p>Simpan nota ini sebagai bukti transaksi Anda yang sah.</p>
+      </div>
+      <div class="inv-actions" style="display: flex; justify-content: center; gap: 0.75rem; margin-top: 1.75rem; flex-wrap: wrap;">
+        <button type="button" class="btn btn-primary" onclick="downloadInvoice('${esc(t.invoice_number)}')">Download Nota</button>
+        <button type="button" class="btn btn-outline" onclick="window.print()">Cetak / Simpan PDF</button>
       </div>
     </div>
   </div>`;
   return { title: 'Invoice ' + t.invoice_number, cls: 'pg-invoice', html };
+}
+function downloadInvoice(inv) {
+  const u = me(); if (!u) return;
+  const t = DB.transactions.find(x => x.invoice_number === inv && x.user_id === u.id);
+  if (!t) return;
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    toast('info', 'Mode Offline', 'Library PDF belum termuat. Gunakan dialog cetak untuk Simpan sebagai PDF.');
+    window.print();
+    return;
+  }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  const L = 40, R = 555;
+  const isPaid = ['processing', 'shipped', 'delivered', 'done'].includes(t.status);
+  const statusText = isPaid ? 'LUNAS' : t.status === 'cancelled' ? 'DIBATALKAN' : 'PENDING';
+  const statusRgb = isPaid ? [26, 127, 55] : t.status === 'cancelled' ? [200, 40, 40] : [232, 82, 26];
+
+  let y = 52;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(20); doc.setTextColor(17, 17, 17);
+  doc.text('PARTLYFE', L, y);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(102, 102, 102);
+  doc.text('Distributor Sparepart Motor Terpercaya', L, y + 16);
+
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(17, 17, 17);
+  doc.text('INVOICE', R, y, { align: 'right' });
+  doc.setFont('courier', 'normal'); doc.setFontSize(10); doc.setTextColor(102, 102, 102);
+  doc.text(String(t.invoice_number), R, y + 15, { align: 'right' });
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(...statusRgb);
+  doc.text(statusText, R, y + 30, { align: 'right' });
+
+  y += 50;
+  doc.setDrawColor(225, 225, 225); doc.line(L, y, R, y);
+  y += 22;
+
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(120, 120, 120);
+  doc.text('DITAGIHKAN KEPADA', L, y);
+  doc.text('TANGGAL TRANSAKSI', R, y, { align: 'right' });
+
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(17, 17, 17);
+  doc.text(String(u.name || '-'), L, y + 16);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(80, 80, 80);
+  doc.text(String(u.phone || '-'), L, y + 31);
+  doc.text(String(u.email || '-'), L, y + 46);
+  doc.setTextColor(17, 17, 17);
+  doc.text(`${fmtDate(t.created_at, 'd F Y H:i')} WIB`, R, y + 16, { align: 'right' });
+
+  y += 70;
+  doc.setFillColor(245, 245, 245); doc.rect(L, y, R - L, 24, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(90, 90, 90);
+  doc.text('NAMA BARANG', L + 8, y + 15);
+  doc.text('QTY', 345, y + 15, { align: 'center' });
+  doc.text('HARGA', 445, y + 15, { align: 'right' });
+  doc.text('SUBTOTAL', R - 8, y + 15, { align: 'right' });
+  y += 24;
+
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+  detailsOf(t.id).forEach(d => {
+    const p = findProduct(d.product_id);
+    const nameLines = doc.splitTextToSize(p ? p.name : 'Produk tidak tersedia', 260);
+    const rowH = Math.max(24, nameLines.length * 14 + 10);
+    if (y + rowH > 760) { doc.addPage(); y = 48; }
+    doc.setTextColor(17, 17, 17);
+    doc.text(nameLines, L + 8, y + 16);
+    doc.setTextColor(90, 90, 90);
+    doc.text(String(d.qty), 345, y + 16, { align: 'center' });
+    doc.text(rp(d.price), 445, y + 16, { align: 'right' });
+    doc.setTextColor(17, 17, 17);
+    doc.text(rp(d.qty * d.price), R - 8, y + 16, { align: 'right' });
+    y += rowH;
+    doc.setDrawColor(238, 238, 238); doc.line(L, y, R, y);
+  });
+
+  y += 24;
+  if (y > 720) { doc.addPage(); y = 48; }
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(102, 102, 102);
+  doc.text('Subtotal', 360, y);
+  doc.setTextColor(17, 17, 17);
+  doc.text(rp(t.total_amount), R - 8, y, { align: 'right' });
+
+  y += 12;
+  doc.setDrawColor(232, 82, 26); doc.setLineWidth(1.5); doc.line(360, y, R, y);
+  y += 20;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(17, 17, 17);
+  doc.text('TOTAL', 360, y);
+  doc.setTextColor(232, 82, 26);
+  doc.text(rp(t.total_amount), R - 8, y, { align: 'right' });
+
+  y += 42;
+  doc.setDrawColor(225, 225, 225); doc.setLineWidth(0.5); doc.line(L, y, R, y);
+  y += 20;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(110, 110, 110);
+  doc.text('Terima kasih telah berbelanja di Partlyfe.', (L + R) / 2, y, { align: 'center' });
+  doc.text('Simpan nota ini sebagai bukti transaksi Anda yang sah.', (L + R) / 2, y + 14, { align: 'center' });
+
+  doc.save(`Nota-${t.invoice_number}.pdf`);
+  toast('success', 'Nota PDF Diunduh', `File Nota-${t.invoice_number}.pdf berhasil diunduh.`);
 }
 
 /* ---------- broadcast/index.blade.php (CustomerController@broadcasts) ---------- */
@@ -3155,7 +3398,12 @@ function render(keep = false) {
     const [[, fn, opt = {}], m] = found;
     if ((opt.auth || opt.admin) && !u) { DB.session.intended = location.hash; save(); return go('#/login', ['info', 'Silakan masuk', 'Silakan login terlebih dahulu.']); }
     if (opt.guest && u) return go(u.role === 'admin' ? '#/admin/dashboard' : '#/');
-    res = (opt.admin && u.role !== 'admin') ? page403() : fn(query, ...m.slice(1).map(decodeURIComponent));
+    try {
+  res = (opt.admin && u.role !== 'admin') ? page403() : fn(query, ...m.slice(1).map(decodeURIComponent));
+} catch (err) {
+  console.error(err);
+  res = errorPage(500, 'Error: ' + err.message);
+}
   }
   if (res.redirect) return go(res.redirect, res.flash);
   const y = window.scrollY, am = $('.admin-main'), ay = am ? am.scrollTop : 0;
