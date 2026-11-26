@@ -789,8 +789,11 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield}
 .shop .nav-search{overflow:visible}
 .shop .search-results{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#111110;border:1px solid rgba(242,239,230,.1);border-radius:3px;box-shadow:0 15px 35px rgba(0,0,0,.6);display:none;z-index:300;max-height:420px;overflow-y:auto}
 .shop .search-results.show{display:block}
-.shop .search-item{display:flex;align-items:center;gap:.75rem;padding:.65rem .9rem;border-bottom:1px solid rgba(242,239,230,.05)}
-.shop .search-item:hover{background:rgba(232,82,26,.06)}
+.shop .search-item{display:flex;align-items:center;gap:.75rem;padding:.65rem .9rem;border-bottom:1px solid rgba(242,239,230,.05);text-decoration:none;color:inherit}
+.shop .search-item:hover,.shop .search-item.active{background:rgba(232,82,26,.12)}
+.shop .search-all-link{display:block;padding:.65rem .9rem;text-align:center;font-family:var(--font-mono);font-size:.72rem;color:var(--orange);background:#151513;text-decoration:none;border-top:1px solid rgba(242,239,230,.08)}
+.shop .search-all-link:hover{background:rgba(232,82,26,.12)}
+.shop-menu-btn,.shop-backdrop,.shop-drawer,.cat-price-toggle{display:none}
 .shop .search-item-img{width:40px;height:40px;background:#1A1A16;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
 .shop .search-item-img img{width:100%;height:100%;object-fit:contain}
 .shop .search-item-info{flex:1;min-width:0}
@@ -1069,29 +1072,72 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield}
 @media (max-width:768px){
   .shop{overflow-x:clip}
 
-  /* Navbar: baris 1 = logo + ikon, baris 2 = search */
-  .shop .nav{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"logo icons" "search search";align-items:center;height:auto;padding:.6rem 16px;gap:.5rem 0}
+  /* Navbar: baris 1 = hamburger + logo + ikon ringkas, baris 2 = search */
+  .shop .nav{display:grid;grid-template-columns:auto auto 1fr;grid-template-areas:"menu logo icons" "search search search";align-items:center;height:auto;padding:.6rem 16px;gap:.55rem .6rem}
   .shop .nav>*{min-width:0}
+  .shop-menu-btn{display:inline-flex;grid-area:menu;align-items:center;justify-content:center;width:36px;height:36px;background:#151513;border:1px solid rgba(242,239,230,.14);color:var(--off-white);border-radius:4px;font-size:1.1rem;cursor:pointer}
   .shop .nav-logo{grid-area:logo}
   .shop .nav-spacer{display:none}
-  .shop .nav-icons{grid-area:icons;justify-self:end;flex-wrap:nowrap}
+  .shop .nav-icons{grid-area:icons;justify-self:end;flex-wrap:nowrap;gap:.25rem}
+  .shop .nav-icons > a[href="#/produk"],.shop .nav-icons > a[href="#/wishlist"],.shop .nav-icons > a[href="#/admin/dashboard"],.shop .nav-icons > .nav-avatar{display:none}
   .shop .nav-search{grid-area:search;display:flex;width:100%;max-width:none}
   .shop .nav-search input{min-width:0;width:100%}
   .shop .nav-search-btn{flex-shrink:0}
   .shop .notif-dropdown{position:fixed;top:calc(100% + 4px);left:12px;right:12px;width:auto}
 
-  /* Beranda */
-  .shop .hero{min-height:auto}
-  .shop .hero-right{min-height:220px}
-  .shop .hero-actions{flex-wrap:wrap;gap:1rem}
+  /* Customer Hamburger Drawer (3/4 layar dari kiri + animasi halus) */
+  .shop-backdrop{display:block;position:fixed;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(2px);z-index:1190;opacity:0;pointer-events:none;transition:opacity .3s cubic-bezier(.4,0,.2,1)}
+  .shop.drawer-open .shop-backdrop{opacity:1;pointer-events:auto}
+  .shop-drawer{display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;width:75vw;max-width:300px;height:100vh;height:100dvh;background:#111110;border-right:1px solid rgba(242,239,230,.1);z-index:1200;transform:translateX(-100%);transition:transform .32s cubic-bezier(.22,1,.36,1);box-shadow:12px 0 36px rgba(0,0,0,.7)}
+  .shop.drawer-open .shop-drawer{transform:translateX(0)}
+  .shop-drawer-head{display:flex;justify-content:space-between;align-items:center;padding:1rem 16px;border-bottom:1px solid rgba(242,239,230,.08)}
+  .shop-drawer-close{width:32px;height:32px;background:transparent;border:1px solid rgba(242,239,230,.15);color:var(--gray-light);border-radius:4px;font-size:1.2rem;cursor:pointer;line-height:1}
+  .shop-drawer-user{padding:.85rem 16px;background:#151513;border-bottom:1px solid rgba(242,239,230,.08);font-size:.84rem}
+  .shop-drawer-nav{flex:1;overflow-y:auto;padding:.4rem 0;display:flex;flex-direction:column}
+  .shop-drawer-link{display:flex;align-items:center;justify-content:space-between;padding:.75rem 16px;color:var(--gray-light);text-decoration:none;font-size:.9rem;border-left:3px solid transparent;transition:all .15s}
+  .shop-drawer-link:hover,.shop-drawer-link.active{background:rgba(232,82,26,.1);color:var(--orange);border-left-color:var(--orange)}
+  .shop-drawer-foot{padding:.85rem 16px;border-top:1px solid rgba(242,239,230,.08);display:flex;flex-direction:column;gap:.5rem}
+  .cat-price-toggle{display:flex;width:100%;justify-content:space-between;align-items:center;background:#151513;border:1px solid rgba(242,239,230,.12);color:var(--off-white);padding:.65rem .9rem;border-radius:4px;font-size:.82rem;font-weight:600;cursor:pointer;margin-bottom:.65rem}
+  .pg-catalog .sidebar-price-card{display:none}
+  .pg-catalog .sidebar-price-card.open{display:block}
+
+  /* Beranda (mobile-first polish) */
+  .pg-home .hero-left{padding:2rem 16px 1.75rem !important}
+  .shop .hero{min-height:auto;grid-template-columns:1fr !important}
+  .shop .hero-eyebrow{margin-bottom:.75rem;font-size:.65rem}
+  .shop .hero-title{font-size:2.9rem !important;line-height:.95 !important;margin-bottom:1rem !important}
+  .shop .hero-sub{font-size:.92rem;line-height:1.55;margin-bottom:1.5rem}
+  .shop .hero-actions{flex-wrap:wrap;gap:.85rem}
   .shop .hero-link{margin-left:0 !important}
-  .shop .hero-actions .btn-lg{padding:.9rem 1.5rem !important;font-size:.95rem !important}
-  .shop .kategori-grid{grid-template-columns:repeat(2,1fr)}
-  .shop .kategori-icon-wrap svg{width:90px;height:90px}
-  .shop .kategori-info{padding:1rem .85rem}
-  .shop .kategori-name{font-size:1.25rem}
-  .shop .produk-card{padding:1.25rem}
-  .shop .btn-promo{white-space:normal;justify-content:center;text-align:center}
+  .shop .hero-actions .btn-lg{padding:.8rem 1.35rem !important;font-size:.9rem !important;width:100%;justify-content:center}
+  .shop .hero-stats{display:grid !important;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-top:1.75rem;padding-top:1.25rem}
+  .shop .hero-stat-num{font-size:1.55rem}
+  .shop .hero-stat-label{font-size:.62rem;letter-spacing:.04em}
+  .shop .hero-right{height:auto !important;min-height:220px}
+  .shop .hero-engine-svg{max-height:220px}
+  .shop .hero-badge{top:1rem;left:0;padding:.4rem .9rem;font-size:.62rem}
+  .shop .hero-ticker{bottom:1rem;left:1rem;right:1rem}
+  .shop .ticker-items{gap:.4rem}
+  .shop .ticker-item{padding:.22rem .5rem;font-size:.68rem}
+  .pg-home .home-pad{padding:2.25rem 16px !important}
+  .pg-home .home-pad-promo{padding:0 16px 2.25rem !important}
+  .pg-home .kategori-header,.pg-home .produk-header{margin-bottom:1.5rem}
+  .shop .kategori-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:2px}
+  .shop .kategori-card{aspect-ratio:4/3}
+  .shop .kategori-icon-wrap svg{width:72px;height:72px}
+  .shop .kategori-info{padding:.85rem .75rem}
+  .shop .kategori-name{font-size:1.15rem}
+  .shop .produk-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:.6rem !important}
+  .shop .produk-card{padding:.85rem}
+  .shop .produk-img-wrap{margin-bottom:.75rem}
+  .shop .produk-name{font-size:.82rem;line-height:1.3}
+  .shop .produk-spec{font-size:.7rem;margin-bottom:.6rem}
+  .shop .produk-price{font-size:1.1rem}
+  .shop .produk-add{width:30px;height:30px}
+  .shop .promo-banner{grid-template-columns:1fr !important;gap:1.25rem !important;padding:1.75rem 1.25rem !important}
+  .shop .promo-title{font-size:2.1rem !important;margin-bottom:.75rem}
+  .shop .promo-sub{font-size:.88rem}
+  .shop .btn-promo{width:100%;padding:.85rem 1rem !important;white-space:normal;justify-content:center;text-align:center}
 
   /* Katalog: kategori jadi chip geser horizontal, produk 2 kolom */
   .pg-catalog .shop-main{min-width:0}
@@ -1626,6 +1672,37 @@ function notifDropdownHtml(list) {
   </div>`;
 }
 
+function searchShopProducts(raw, limit = 8) {
+  const q = (raw || '').trim().toLowerCase();
+  if (!q) return DB.products.filter(p => p.current_stock > 0).slice(0, limit);
+  const tokens = q.split(/\s+/).filter(Boolean);
+  return DB.products.map(p => {
+    const cat = findCategory(p.category_id)?.name || '';
+    const hay = `${p.name} ${p.brand} ${p.item_code} ${cat}`.toLowerCase();
+    const words = hay.split(/\s+/);
+    let score = 0;
+    for (const tk of tokens) {
+      let best = 0;
+      if (p.item_code.toLowerCase() === tk || p.name.toLowerCase().startsWith(tk)) best = 100;
+      else if (hay.includes(tk)) best = 80;
+      else {
+        for (const w of words) {
+          if (w.startsWith(tk)) { best = Math.max(best, 85); break; }
+          if (tk.length >= 3) {
+            const d = levenshtein(tk, w), maxD = tk.length <= 4 ? 1 : 2;
+            if (d <= maxD) best = Math.max(best, 62 - d * 12);
+            else if (isSubseq(tk, w)) best = Math.max(best, 38);
+          }
+        }
+      }
+      if (!best) return { p, score: 0 };
+      score += best;
+    }
+    if (p.current_stock > 0) score += 3;
+    return { p, score };
+  }).filter(x => x.score > 0).sort((a, b) => b.score - a.score).slice(0, limit).map(x => x.p);
+}
+
 function shopShell(res) {
   const u = me();
   const badge = n => n > 0 ? `<span class="nav-badge">${n > 9 ? '9+' : n}</span>` : '';
@@ -1639,11 +1716,39 @@ function shopShell(res) {
   } else {
     icons += `<a href="#/login" class="nav-icon-btn" title="Masuk/Daftar" style="font-size: 0.85rem;">&#128100;</a>`;
   }
-  return `<div class="shop">
+  const curHash = location.hash || '#/';
+  const dLink = (href, label, extra = '') => `<a href="${href}" class="shop-drawer-link ${curHash.startsWith(href) && href !== '#/' || curHash === href ? 'active' : ''}"><span>${label}</span>${extra ? `<span style="font-family:var(--font-mono);font-size:.72rem;color:var(--orange);">${extra}</span>` : ''}</a>`;
+  return `<div class="shop" id="shopShell">
+    <div class="shop-backdrop" id="shopBackdrop"></div>
+    <aside class="shop-drawer" id="shopDrawer">
+      <div class="shop-drawer-head">
+        <a href="#/" class="nav-logo" style="font-size:1.35rem;">PART<span>L</span>YFE</a>
+        <button type="button" class="shop-drawer-close" id="shopDrawerClose" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="shop-drawer-user">
+        ${u ? `<div style="font-weight:600;color:var(--off-white);">${esc(u.name)}</div><div style="font-size:.75rem;color:var(--gray-mid);">${esc(u.email)}</div>`
+            : `<div style="color:var(--gray-light);margin-bottom:.5rem;">Belum masuk akun</div><a href="#/login" class="btn btn-primary btn-sm" style="width:100%;justify-content:center;">Masuk / Daftar</a>`}
+      </div>
+      <nav class="shop-drawer-nav">
+        ${dLink('#/', 'Beranda')}
+        ${dLink('#/produk', 'Katalog Produk (SHOP)')}
+        ${dLink('#/kategori', 'Semua Kategori')}
+        ${u ? dLink('#/cart', 'Keranjang Belanja', cartCount() ? `${cartCount()} item` : '') : ''}
+        ${u ? dLink('#/wishlist', 'Wishlist', wishCount() ? `${wishCount()}` : '') : ''}
+        ${u ? dLink('#/transactions', 'Riwayat Transaksi') : ''}
+        ${u ? dLink('#/notifikasi', 'Notifikasi', unreadOf(u.id).length ? `${unreadOf(u.id).length} baru` : '') : ''}
+        ${u ? dLink('#/akun', 'Akun Saya') : ''}
+        ${u && u.role === 'admin' ? dLink('#/admin/dashboard', 'Panel Admin', 'ADMIN') : ''}
+      </nav>
+      <div class="shop-drawer-foot">
+        ${u ? `<button type="button" class="btn btn-outline btn-sm" style="width:100%;justify-content:center;" onclick="logout()">Keluar Akun</button>` : ''}
+      </div>
+    </aside>
     <nav class="nav">
+      <button type="button" class="shop-menu-btn" id="shopMenuBtn" aria-label="Menu">&#9776;</button>
       <a href="#/" class="nav-logo">PART<span>L</span>YFE</a>
       <div class="nav-search" style="position: relative;">
-        <input type="text" id="searchInput" placeholder="Cari sparepart, merek, tipe motor..." autocomplete="off">
+        <input type="text" id="searchInput" placeholder="Cari sparepart, merek, SKU..." autocomplete="off">
         <button class="nav-search-btn" id="searchBtn" aria-label="Cari">${ICON.search}</button>
         <div id="searchResults" class="search-results"></div>
       </div>
@@ -1659,26 +1764,48 @@ function shopShell(res) {
 }
 
 function bindShopShell() {
+  const shell = $('#shopShell'), mBtn = $('#shopMenuBtn'), cBtn = $('#shopDrawerClose'), bDrop = $('#shopBackdrop');
+  const setShopDrawer = open => shell && shell.classList.toggle('drawer-open', open);
+  if (mBtn) mBtn.addEventListener('click', () => setShopDrawer(!shell.classList.contains('drawer-open')));
+  if (cBtn) cBtn.addEventListener('click', () => setShopDrawer(false));
+  if (bDrop) bDrop.addEventListener('click', () => setShopDrawer(false));
+  $$('.shop-drawer-link').forEach(a => a.addEventListener('click', () => setShopDrawer(false)));
+
   const inp = $('#searchInput'), box = $('#searchResults'), btn = $('#searchBtn');
-  if (inp) {
-    let t;
+  if (inp && box) {
+    let idx = -1, cur = [];
     const run = () => {
       const q = inp.value.trim();
-      if (q.length < 2) { box.classList.remove('show'); box.innerHTML = ''; return; }
-      const s = q.toLowerCase();
-      const data = DB.products.filter(p => p.name.toLowerCase().includes(s) || p.brand.toLowerCase().includes(s)).slice(0, 8);
-      box.innerHTML = data.length ? data.map(p => `
-        <a href="#/produk/${p.id}" class="search-item">
+      cur = searchShopProducts(q, 7);
+      idx = -1;
+      const head = q ? '' : '<div style="padding:.45rem .9rem;font-family:var(--font-mono);font-size:.65rem;color:var(--orange);letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid rgba(242,239,230,.05);">Produk Populer</div>';
+      box.innerHTML = cur.length ? head + cur.map((p, i) => `
+        <a href="#/produk/${p.id}" class="search-item" data-idx="${i}">
           <div class="search-item-img">${imgTag(firstImg(p), p.name, PH.search)}</div>
-          <div class="search-item-info"><div class="search-item-name">${esc(p.name)}</div><div class="search-item-brand">${esc(p.brand)}</div></div>
+          <div class="search-item-info"><div class="search-item-name">${esc(p.name)}</div><div class="search-item-brand">${esc(p.brand)} · ${esc(p.item_code)} · ${p.current_stock > 0 ? 'Stok ' + p.current_stock : 'Habis'}</div></div>
           <div class="search-item-price">${rp(firstPrice(p))}</div>
-        </a>`).join('') : '<div class="search-no-results">Tidak ada produk ditemukan</div>';
+        </a>`).join('') + (q ? `<a href="#/produk${qs({ search: q })}" class="search-all-link">Lihat semua hasil untuk "${esc(q)}" &rarr;</a>` : '')
+        : '<div class="search-no-results">Produk tidak ditemukan. Coba kata kunci lain.</div>';
       box.classList.add('show');
     };
-    const goSearch = () => go('#/produk' + qs({ search: inp.value }));
-    inp.addEventListener('input', () => { clearTimeout(t); t = setTimeout(run, 300); });
-    inp.addEventListener('keypress', e => { if (e.key === 'Enter') goSearch(); });
-    inp.addEventListener('focus', () => { if (inp.value.length >= 2) box.classList.add('show'); });
+    const setActive = n => {
+      const items = $$('.search-item', box);
+      if (!items.length) return;
+      idx = (n + items.length) % items.length;
+      items.forEach((el, i) => el.classList.toggle('active', i === idx));
+    };
+    const goSearch = () => { box.classList.remove('show'); go('#/produk' + qs({ search: inp.value.trim() })); };
+    inp.addEventListener('focus', run);
+    inp.addEventListener('input', run);
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown') { e.preventDefault(); setActive(idx + 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(idx - 1); }
+      else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (idx >= 0 && cur[idx]) { box.classList.remove('show'); go('#/produk/' + cur[idx].id); }
+        else goSearch();
+      } else if (e.key === 'Escape') { box.classList.remove('show'); inp.blur(); }
+    });
     btn.addEventListener('click', goSearch);
   }
   const nb = $('#notifBtn');
@@ -1892,8 +2019,8 @@ function pageCatalog(q, fixedCat) {
   const selected = fixedCat ? fixedCat.id : (q.category ? Number(q.category) : null);
   const search = fixedCat ? '' : String(q.search || '').trim();
   let list = DB.products.slice();
+  if (search) list = searchShopProducts(search, 999);
   if (selected) list = list.filter(p => p.category_id === selected);
-  if (search) { const s = search.toLowerCase(); list = list.filter(p => p.name.toLowerCase().includes(s) || p.brand.toLowerCase().includes(s)); }
   // Demo: filter memakai harga eceran (L1) yang terlihat di kartu, bukan base_price (harga modal)
   const all = DB.products.map(priceL1);
   const statMin = all.length ? Math.min(...all) : 0, statMax = all.length ? Math.max(...all) : 1000000;
@@ -1916,7 +2043,8 @@ function pageCatalog(q, fixedCat) {
             ${DB.categories.map(c => `<li><a href="#/produk${qs({ ...base, category: c.id })}" class="filter-item ${selected === c.id ? 'active' : ''}">${esc(c.name)} <span class="count">${num(catCount(c.id))}</span></a></li>`).join('')}
           </ul>
         </div>
-        <div class="sidebar-card">
+        <button type="button" class="cat-price-toggle" onclick="const c=this.nextElementSibling;c.classList.toggle('open');this.querySelector('span').textContent=c.classList.contains('open')?'&#9652;':'&#9662;';">Filter Rentang Harga <span>&#9662;</span></button>
+        <div class="sidebar-card sidebar-price-card">
           <div class="sidebar-title">Rentang Harga</div>
           <div class="price-range-container">
             <div class="range-values"><span>Rp <span id="minPriceLabel">${num(vMin)}</span></span><span>Rp <span id="maxPriceLabel">${num(vMax)}</span></span></div>
