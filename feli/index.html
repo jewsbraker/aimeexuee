@@ -702,12 +702,32 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield}
 .pg-aproducts .section-panel{background: #151513; border: 1px solid rgba(242, 239, 230, 0.08); border-radius: 6px; padding: 1.25rem; margin-top: 1.5rem;}
 .pg-aproducts .section-panel h4{margin-top: 0; margin-bottom: 0.5rem; color: #E8521A; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px dashed rgba(242, 239, 230, 0.1); padding-bottom: 0.5rem;}
 
-/* ===== admin/pos/index.blade.php  →  .pg-apos ===== */
-.pg-apos .pos-layout{display: grid; grid-template-columns: 1fr 400px; gap: 1.5rem; height: calc(100vh - 120px);}
-.pg-apos .pos-products{background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; align-content: start;}
-.pg-apos .pos-item{border: 1px solid var(--border); padding: 1rem; text-align: center; border-radius: 8px; cursor: pointer; transition: all 0.2s; background: #151513;}
-.pg-apos .pos-item:hover{border-color: var(--orange); background: rgba(232,82,26,0.05);}
-.pg-apos .pos-cart{background: var(--surface); border: 1px solid var(--border); border-radius: 8px; display: flex; flex-direction: column;}
+/* ===== admin/pos/index.blade.php  →  .pg-apos (Haidilao-style POS) ===== */
+.pg-apos .pos-layout{display: grid; grid-template-columns: 1fr 380px; gap: 1.25rem; height: calc(100vh - 180px); min-height: 480px;}
+.pg-apos .pos-left{display:flex;flex-direction:column;min-width:0;min-height:0;gap:.75rem}
+.pg-apos .pos-cats{display:flex;gap:.45rem;overflow-x:auto;padding-bottom:.25rem;-webkit-overflow-scrolling:touch;flex-shrink:0}
+.pg-apos .pos-cat-pill{flex:0 0 auto;background:#151513;border:1px solid var(--border);color:var(--gray-light);padding:.45rem .85rem;border-radius:999px;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s}
+.pg-apos .pos-cat-pill:hover{border-color:rgba(232,82,26,.45);color:var(--off-white)}
+.pg-apos .pos-cat-pill.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.pg-apos .pos-products{flex:1;background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: .9rem; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: .75rem; align-content: start;}
+.pg-apos .pos-item{position:relative;border: 1px solid var(--border); padding: .85rem .75rem; text-align: left; border-radius: 8px; cursor: pointer; transition: all 0.15s; background: #151513; display:flex; flex-direction:column; gap:.3rem}
+.pg-apos .pos-item:hover{border-color: var(--orange); background: rgba(232,82,26,0.06);}
+.pg-apos .pos-item.in-cart{border-color:var(--orange);background:rgba(232,82,26,.1)}
+.pg-apos .pos-item-badge{position:absolute;top:-7px;right:-7px;background:var(--orange);color:#fff;font-family:var(--font-mono);font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+.pg-apos .pos-item-stepper{display:flex;align-items:center;justify-content:space-between;gap:.35rem;margin-top:auto;padding-top:.4rem;border-top:1px dashed rgba(242,239,230,.08)}
+.pg-apos .pos-cart{background: var(--surface); border: 1px solid var(--border); border-radius: 8px; display: flex; flex-direction: column; min-height:0}
+.pg-apos .pos-mobile-bar,.pg-apos .pos-sheet-close,.pg-apos .pos-cart-backdrop{display:none}
+@media (max-width:900px){
+  .pg-apos .pos-layout{grid-template-columns:1fr;height:auto;min-height:0}
+  .pg-apos .pos-products{max-height:none;overflow:visible;padding:.7rem;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+  .pg-apos{padding-bottom:5.25rem !important}
+  .pg-apos .pos-mobile-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:950;background:#151513;border-top:2px solid var(--orange);padding:.65rem 14px;justify-content:space-between;align-items:center;gap:.75rem;box-shadow:0 -10px 28px rgba(0,0,0,.7)}
+  .pg-apos .pos-cart-backdrop{display:block;position:fixed;inset:0;background:rgba(0,0,0,.68);z-index:1140;opacity:0;pointer-events:none;transition:opacity .25s}
+  .pg-apos .pos-cart-backdrop.show{opacity:1;pointer-events:auto}
+  .pg-apos .pos-cart{position:fixed;left:0;right:0;bottom:0;max-height:85vh;z-index:1150;border-radius:14px 14px 0 0;transform:translateY(105%);transition:transform .3s cubic-bezier(.22,1,.36,1);box-shadow:0 -14px 36px rgba(0,0,0,.8)}
+  .pg-apos .pos-cart.sheet-open{transform:translateY(0)}
+  .pg-apos .pos-sheet-close{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;background:transparent;border:1px solid var(--border);color:var(--gray-light);border-radius:4px;font-size:1.1rem;cursor:pointer}
+}
 .pg-apos .cart-items{flex: 1; overflow-y: auto; padding: 1rem;}
 .pg-apos .cart-row{display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;}
 .pg-apos .cart-footer{padding: 1rem; border-top: 1px solid var(--border);}
@@ -794,6 +814,10 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield}
 .shop .search-all-link{display:block;padding:.65rem .9rem;text-align:center;font-family:var(--font-mono);font-size:.72rem;color:var(--orange);background:#151513;text-decoration:none;border-top:1px solid rgba(242,239,230,.08)}
 .shop .search-all-link:hover{background:rgba(232,82,26,.12)}
 .shop-menu-btn,.shop-backdrop,.shop-drawer,.cat-price-toggle{display:none}
+.shop .admin-return-bar{background:#1a120d;border-bottom:2px solid var(--orange);padding:.55rem 4rem;display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;font-size:.82rem;color:var(--off-white)}
+.shop .admin-return-btn{background:var(--orange);color:#fff;padding:.38rem .9rem;border-radius:4px;font-weight:600;font-size:.78rem;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:.35rem}
+.shop .admin-return-btn:hover{background:var(--orange-light)}
+@media (max-width:768px){.shop .admin-return-bar{padding:.55rem 16px;font-size:.78rem}.shop .admin-return-btn{width:100%;justify-content:center}}
 .shop .search-item-img{width:40px;height:40px;background:#1A1A16;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
 .shop .search-item-img img{width:100%;height:100%;object-fit:contain}
 .shop .search-item-info{flex:1;min-width:0}
@@ -947,7 +971,6 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield}
   .adm .admin-table th,.adm .admin-table td{padding:.65rem .75rem;font-size:.82rem}
   .adm .table-scroll{-webkit-overflow-scrolling:touch;max-width:100%}
   .pg-apos .pos-layout{grid-template-columns:1fr;height:auto}
-  .pg-apos .pos-products{max-height:48vh}
   .adm .modal-content,.pg-aproducts .modal-content,.pg-atiers .modal-content,.pg-apos .modal-content-pos{width:94%;padding:1.25rem;max-height:88vh;overflow-y:auto}
   .adm .modal-content .form-grid{grid-template-columns:1fr}
   .adm .modal-content .form-grid > *{grid-column:auto !important}
@@ -1031,18 +1054,18 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield}
   .pg-ausers .admin-table tbody td:nth-child(7){grid-column:1 / -1;grid-row:5;padding-top:.55rem;margin-top:.2rem;border-top:1px dashed rgba(242,239,230,.08)}
   .pg-ausers .admin-table tbody td:nth-child(7) .btn{width:100%;padding:.55rem}
 
-  /* Level Harga mobile cards (5 kolom: No, Nama, Badge, Pengguna, Aksi) */
-  .pg-atiers .admin-page-header .btn{width:100%;text-align:center}
-  .pg-atiers .admin-table tbody tr{display:grid;grid-template-columns:1fr auto;gap:.35rem .75rem;align-items:center;background:#151513;border:1px solid var(--border);border-radius:8px;padding:.95rem;margin-bottom:.75rem}
-  .pg-atiers .admin-table tbody td{padding:0;border:none;min-width:0}
-  .pg-atiers .admin-table tbody td:first-child{display:none}
-  .pg-atiers .admin-table tbody td:nth-child(2){grid-column:1;grid-row:1;font-weight:600;font-size:.95rem}
-  .pg-atiers .admin-table tbody td:nth-child(3){grid-column:2;grid-row:1;justify-self:end}
-  .pg-atiers .admin-table tbody td:nth-child(4){grid-column:1 / -1;grid-row:2;font-size:.8rem;color:var(--gray-mid);padding-top:.15rem}
-  .pg-atiers .admin-table tbody td:nth-child(5){grid-column:1 / -1;grid-row:3;display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding-top:.6rem;margin-top:.2rem;border-top:1px dashed rgba(242,239,230,.08)}
-  .pg-atiers .admin-table tbody td:nth-child(5) .btn{margin-left:0 !important;width:100%;padding:.5rem}
-  .pg-aorders .admin-table tbody td[colspan],.pg-ausers .admin-table tbody td[colspan],.pg-atiers .admin-table tbody td[colspan]{display:block;grid-column:1 / -1;padding:1.25rem;text-align:center}
-  .pg-ausers #tierForm > div:last-child .btn,.pg-atiers #tierEditForm > div:last-child .btn,.pg-astock #stockInForm button[type=submit]{flex:1;width:100%;padding:.65rem}
+  /* Level Harga & Kategori mobile cards (5 kolom: No, Nama, Badge/Info, Jumlah, Aksi) */
+  .pg-atiers .admin-page-header .btn,.pg-acats .admin-page-header .btn{width:100%;text-align:center}
+  .pg-atiers .admin-table tbody tr,.pg-acats .admin-table tbody tr{display:grid;grid-template-columns:1fr auto;gap:.35rem .75rem;align-items:center;background:#151513;border:1px solid var(--border);border-radius:8px;padding:.95rem;margin-bottom:.75rem}
+  .pg-atiers .admin-table tbody td,.pg-acats .admin-table tbody td{padding:0;border:none;min-width:0}
+  .pg-atiers .admin-table tbody td:first-child,.pg-acats .admin-table tbody td:first-child{display:none}
+  .pg-atiers .admin-table tbody td:nth-child(2),.pg-acats .admin-table tbody td:nth-child(2){grid-column:1;grid-row:1;font-weight:600;font-size:.95rem}
+  .pg-atiers .admin-table tbody td:nth-child(3),.pg-acats .admin-table tbody td:nth-child(4){grid-column:2;grid-row:1;justify-self:end}
+  .pg-atiers .admin-table tbody td:nth-child(4),.pg-acats .admin-table tbody td:nth-child(3){grid-column:1 / -1;grid-row:2;font-size:.8rem;color:var(--gray-mid);padding-top:.15rem}
+  .pg-atiers .admin-table tbody td:nth-child(5),.pg-acats .admin-table tbody td:nth-child(5){grid-column:1 / -1;grid-row:3;display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding-top:.6rem;margin-top:.2rem;border-top:1px dashed rgba(242,239,230,.08)}
+  .pg-atiers .admin-table tbody td:nth-child(5) .btn,.pg-acats .admin-table tbody td:nth-child(5) .btn{margin-left:0 !important;width:100%;padding:.5rem}
+  .pg-aorders .admin-table tbody td[colspan],.pg-ausers .admin-table tbody td[colspan],.pg-atiers .admin-table tbody td[colspan],.pg-acats .admin-table tbody td[colspan]{display:block;grid-column:1 / -1;padding:1.25rem;text-align:center}
+  .pg-ausers #tierForm > div:last-child .btn,.pg-atiers #tierEditForm > div:last-child .btn,.pg-acats #catEditForm > div:last-child .btn,.pg-astock #stockInForm button[type=submit]{flex:1;width:100%;padding:.65rem}
   .pg-areports .rep-kpi-grid{grid-template-columns:1fr !important;gap:.75rem}
   .pg-areports .rep-grid{grid-template-columns:1fr !important;gap:.9rem}
   .pg-areports .admin-card{padding:1rem !important}
@@ -1735,6 +1758,7 @@ function shopShell(res) {
   const curHash = location.hash || '#/';
   const dLink = (href, label, extra = '') => `<a href="${href}" class="shop-drawer-link ${curHash.startsWith(href) && href !== '#/' || curHash === href ? 'active' : ''}"><span>${label}</span>${extra ? `<span style="font-family:var(--font-mono);font-size:.72rem;color:var(--orange);">${extra}</span>` : ''}</a>`;
   return `<div class="shop" id="shopShell">
+    ${u && u.role === 'admin' ? `<div class="admin-return-bar"><span><strong>Mode Pratinjau Toko</strong> &mdash; Anda login sebagai Admin</span><a href="#/admin/dashboard" class="admin-return-btn">&larr; Kembali ke Dashboard Admin</a></div>` : ''}
     <div class="shop-backdrop" id="shopBackdrop"></div>
     <aside class="shop-drawer" id="shopDrawer">
       <div class="shop-drawer-head">
@@ -1940,7 +1964,7 @@ const HERO_SVG = `<svg class="hero-engine-svg" viewBox="0 0 800 900" xmlns="http
 
 /* ---------- home.blade.php (HomeController@index) ---------- */
 function pageHome() {
-  const cats = DB.categories.slice(0, 4);
+  const cats = DB.categories;
   const featured = stableShuffle('home', DB.products.filter(p => p.current_stock > 0)).slice(0, 3);
   const marquee = ['ORIGINAL PARTS', 'FAST DELIVERY', 'GARANSI RESMI', '50.000+ PRODUK', 'HARGA TERBAIK', 'SPAREPART MOTOR', 'PARTLYFE'];
   const html = `
@@ -2751,6 +2775,7 @@ const closeModal = id => $('#' + id)?.classList.remove('active');
 const ADMIN_MODULES = [
   { code: 'DASH', title: 'Analytics Dashboard', route: '#/admin/dashboard', desc: 'Ringkasan KPI, grafik arus kas, stok menipis & widget', kw: 'dashboard analitik analytics statistik grafik chart omzet kpi ringkasan home' },
   { code: 'PROD', title: 'Manajemen Produk', route: '#/admin/products', desc: 'Kelola katalog sparepart, SKU, harga grosir & stok', kw: 'produk product barang katalog sparepart sku harga modal stok tambah edit hapus item' },
+  { code: 'KAT', title: 'Kategori Produk', route: '#/admin/categories', desc: 'Tambah, edit, atau hapus kategori sparepart', kw: 'kategori category categories tambah edit hapus kelompok jenis barang' },
   { code: 'POS', title: 'POS Kasir', route: '#/admin/pos', desc: 'Transaksi kasir langsung di toko (Cash / Midtrans)', kw: 'pos kasir cashier jual penjualan bayar tunai cash midtrans struk walkin transaksi' },
   { code: 'STOK', title: 'Stok Masuk', route: '#/admin/pos/stock-in', desc: 'Catat penambahan stok barang masuk dari supplier', kw: 'stok stock masuk gudang warehouse supplier restock inventori inventory barang' },
   { code: 'ORD', title: 'Penjualan (Back Office)', route: '#/admin/orders', desc: 'Daftar faktur penjualan, cetak nota, surat jalan & status', kw: 'penjualan back office backoffice faktur nota transaksi invoice order pesanan status' },
@@ -2759,7 +2784,7 @@ const ADMIN_MODULES = [
   { code: 'USER', title: 'Manajemen Pengguna', route: '#/admin/users', desc: 'Daftar pelanggan, grup POS & atur level harga', kw: 'pengguna user users customer pelanggan member akun pembeli level tier' },
   { code: 'TIER', title: 'Level Harga', route: '#/admin/tiers', desc: 'Atur tier harga Eceran hingga Grosir Besar', kw: 'level harga tier tiers grosir eceran diskon wholesale pricing pelanggan' },
   { code: 'REP', title: 'Laporan Penjualan', route: '#/admin/reports', desc: 'Rekap pendapatan bulanan & penjualan per kategori', kw: 'laporan report reports keuangan pendapatan revenue bulanan kategori rekap omset' },
-  { code: 'SHOP', title: 'Lihat Toko', route: '#/', desc: 'Buka tampilan etalase storefront pelanggan', kw: 'toko shop storefront website depan etalase customer' }
+  { code: 'SHOP', title: 'Pratinjau Toko (Etalase)', route: '#/', desc: 'Lihat tampilan storefront pelanggan (ada tombol kembali ke Admin)', kw: 'toko shop storefront website depan etalase customer pratinjau' }
 ];
 function levenshtein(a, b) {
   if (Math.abs(a.length - b.length) > 3) return 99;
@@ -2799,20 +2824,20 @@ function searchAdminModules(raw) {
 }
 function adminShell(res) {
   // Level Harga & Stok Masuk punya route tetapi tidak ada di sidebar asli; ditambahkan di demo agar bisa diakses.
-  const nav = [['dashboard', '#/admin/dashboard', 'Analytics Dashboard'], ['products', '#/admin/products', 'Manajemen Produk'], ['pos', '#/admin/pos', 'POS Kasir'],
+  const nav = [['dashboard', '#/admin/dashboard', 'Analytics Dashboard'], ['products', '#/admin/products', 'Manajemen Produk'], ['categories', '#/admin/categories', 'Kategori Produk'], ['pos', '#/admin/pos', 'POS Kasir'],
     ['stockin', '#/admin/pos/stock-in', 'Stok Masuk'], ['orders', '#/admin/orders', 'Penjualan (Back Office)'], ['bo_new', '#/admin/orders/new', 'Buat Nota (Back Office)'], ['broadcasts', '#/admin/broadcasts', 'Kirim Broadcast'],
     ['users', '#/admin/users', 'Manajemen Pengguna'], ['tiers', '#/admin/tiers', 'Level Harga'], ['reports', '#/admin/reports', 'Laporan']];
   return `<div class="adm" id="admShell">
     <div class="admin-mobile-bar">
-      <span class="admin-mobile-brand">PARTLYFE ADMIN</span>
+      <a href="#/admin/dashboard" class="admin-mobile-brand" style="text-decoration:none;">PARTLYFE ADMIN</a>
       <button type="button" class="admin-menu-btn" id="adminMenuBtn" aria-expanded="false">&#9776; Menu</button>
     </div>
     <div class="admin-backdrop" id="adminBackdrop"></div>
     <aside class="admin-sidebar">
-      <div class="admin-brand"><span>PARTLYFE ADMIN</span><button type="button" class="admin-drawer-close" id="adminDrawerClose" aria-label="Tutup Menu">&times;</button></div>
+      <div class="admin-brand"><a href="#/admin/dashboard" style="text-decoration:none;color:inherit;">PARTLYFE ADMIN</a><button type="button" class="admin-drawer-close" id="adminDrawerClose" aria-label="Tutup Menu">&times;</button></div>
       <nav class="admin-nav">${nav.map(([k, h, l]) => `<a href="${h}" class="nav-item ${res.nav === k ? 'active' : ''}">${l}</a>`).join('')}</nav>
       <div class="admin-drawer-actions">
-        <a href="#/" class="btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main); text-decoration:none;">Lihat Toko</a>
+        <a href="#/" class="btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main); text-decoration:none;">Pratinjau Toko</a>
         <button type="button" class="btn" style="background:transparent; border:1px solid var(--border); color:var(--text-muted);" onclick="resetDemo()">Reset Data Demo</button>
         <button type="button" class="btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main);" onclick="logout()">Logout Akun</button>
       </div>
@@ -2821,7 +2846,7 @@ function adminShell(res) {
       <header class="admin-header">
         <div style="font-weight: bold; letter-spacing: 0.05em;">Admin Control Panel</div>
         <div class="admin-header-actions">
-          <a href="#/" class="btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main); text-decoration:none;">Lihat Toko</a>
+          <a href="#/" class="btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main); text-decoration:none;">Pratinjau Toko</a>
           <button type="button" class="btn" style="background:transparent; border:1px solid var(--border); color:var(--text-muted);" onclick="resetDemo()">Reset Data Demo</button>
           <button type="button" class="btn" style="background:transparent; border:1px solid var(--border); color:var(--text-main);" onclick="logout()">Logout Akun</button>
         </div>
@@ -3065,6 +3090,7 @@ function pageAdminProducts(q) {
     <h2 class="admin-page-title">Manajemen Katalog Produk</h2>
     <div class="prod-head-actions" style="display:flex; gap:.5rem; flex-wrap:wrap;">
       <button class="btn" onclick="openProductModal()">+ Tambah Produk</button>
+      <a href="#/admin/categories" class="btn btn-outline" style="text-decoration:none;">Kelola Kategori</a>
       <button type="button" class="btn btn-outline" onclick="exportProductsExcel()">Export Excel</button>
       <button type="button" class="btn btn-outline" onclick="$('#prodImportFile').click()">Import Excel</button>
       <input type="file" id="prodImportFile" accept=".xlsx,.xls,.csv" style="display:none;" onchange="importProductsExcel(this)">
@@ -3315,42 +3341,60 @@ const posPrice = p => priceAt(p, posLevel());   // demo: kartu & keranjang memak
 const posTotal = () => POS.cart.reduce((a, i) => { const p = findProduct(i.id); return a + (p ? posPrice(p) * i.qty : 0); }, 0);
 function pageAdminPos() {
   POS.cart = POS.cart.filter(i => findProduct(i.id));
+  POS.cat = POS.cat || '';
+  const cats = [{ id: '', name: 'Semua' }, ...DB.categories.map(c => ({ id: String(c.id), name: c.name }))];
   const html = `
-  <div class="admin-page-header" style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;">
-    <h2 class="admin-page-title">POS - Point of Sale</h2>
-    <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
-      <input type="text" id="posSearch" class="form-control" placeholder="Cari produk..." style="width:250px; max-width:100%;" oninput="posRenderGrid()">
-      <button class="btn" onclick="openModal('productSearchModal'); setTimeout(()=>$('#searchBoxPos').focus(),50)">🔍 Cari Produk</button>
+  <div class="admin-page-header" style="display:flex; justify-content:space-between; align-items:center; gap:.75rem; flex-wrap:wrap; margin-bottom:1rem;">
+    <h2 class="admin-page-title">POS Kasir Cepat</h2>
+    <div style="display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; flex:1; justify-content:flex-end; min-width:220px;">
+      <input type="text" id="posSearch" class="form-control" placeholder="Cari SKU, nama, atau brand..." style="flex:1; max-width:300px; min-width:160px;" oninput="posRenderGrid()">
+      <button class="btn btn-outline" onclick="openModal('productSearchModal'); setTimeout(()=>$('#searchBoxPos').focus(),50)">&#128269; Cari Cepat</button>
     </div>
   </div>
   <div class="pos-layout">
-    <div class="pos-products" id="productsGrid"></div>
-    <div class="pos-cart">
-      <div style="padding:1rem; border-bottom:1px solid var(--border); font-weight:bold; color:var(--orange);">🛒 Keranjang POS</div>
-      <div style="padding:1rem; border-bottom:1px solid var(--border); position:relative;">
+    <div class="pos-left">
+      <div class="pos-cats" id="posCats">
+        ${cats.map(c => `<button type="button" class="pos-cat-pill ${String(POS.cat) === c.id ? 'active' : ''}" onclick="posSelectCat('${c.id}')">${esc(c.name)}</button>`).join('')}
+      </div>
+      <div class="pos-products" id="productsGrid"></div>
+    </div>
+    <div class="pos-cart-backdrop" id="posCartBackdrop" onclick="posToggleSheet(false)"></div>
+    <div class="pos-cart" id="posCartPanel">
+      <div style="padding:.9rem 1rem; border-bottom:1px solid var(--border); font-weight:bold; color:var(--orange); display:flex; justify-content:space-between; align-items:center;">
+        <span>&#128722; Keranjang POS</span>
+        <button type="button" class="pos-sheet-close" onclick="posToggleSheet(false)" aria-label="Tutup">&times;</button>
+      </div>
+      <div style="padding:.85rem 1rem; border-bottom:1px solid var(--border); position:relative;">
         <input type="text" id="customerSearch" class="form-control" placeholder="Cari nama pelanggan..." oninput="posSearchCustomers()" autocomplete="off">
         <div id="customerSearchResults"></div>
         <input type="text" id="walkInName" class="form-control" placeholder="Nama Walk-in Customer" style="margin-top:0.5rem; display:none;">
-        <div id="selectedCustomer" style="margin-top:0.5rem; font-size:0.9rem; color:var(--gray-mid);"></div>
+        <div id="selectedCustomer" style="margin-top:0.5rem; font-size:0.85rem; color:var(--gray-mid);"></div>
       </div>
       <div class="cart-items" id="cartItems"></div>
       <div class="cart-footer">
-        <div style="display:flex; justify-content:space-between; margin-bottom:1rem; font-size:1.2rem;"><span>Total:</span><span id="cartTotal" style="color:var(--orange); font-weight:bold;">Rp 0</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:.85rem; font-size:1.15rem;"><span>Total:</span><span id="cartTotal" style="color:var(--orange); font-weight:bold;">Rp 0</span></div>
         <div class="payment-method">
-          <div class="payment-option ${POS.payment === 'cash' ? 'selected' : ''}" onclick="posSelectPayment('cash')" id="paymentCash">💵 Cash</div>
-          <div class="payment-option ${POS.payment === 'midtrans' ? 'selected' : ''}" onclick="posSelectPayment('midtrans')" id="paymentMidtrans">💳 Midtrans</div>
+          <div class="payment-option ${POS.payment === 'cash' ? 'selected' : ''}" onclick="posSelectPayment('cash')" id="paymentCash">&#128181; Cash</div>
+          <div class="payment-option ${POS.payment === 'midtrans' ? 'selected' : ''}" onclick="posSelectPayment('midtrans')" id="paymentMidtrans">&#128179; Midtrans</div>
         </div>
-        <button class="btn" style="width:100%; padding:1rem; font-size:1.1rem;" onclick="posCheckout()">Bayar Sekarang</button>
+        <button class="btn" style="width:100%; padding:.9rem; font-size:1rem; font-weight:600;" onclick="posCheckout()">Bayar Sekarang</button>
       </div>
     </div>
   </div>
+  <div class="pos-mobile-bar" id="posMobileBar">
+    <div onclick="posToggleSheet(true)" style="cursor:pointer;min-width:0;">
+      <div id="posMobCount" style="font-size:.75rem;color:var(--gray-mid);">0 item di keranjang</div>
+      <div id="posMobTotal" style="font-family:var(--font-mono);font-size:1.05rem;font-weight:700;color:var(--orange);">Rp 0</div>
+    </div>
+    <button type="button" class="btn" style="padding:.6rem 1.1rem;font-weight:600;white-space:nowrap;" onclick="posToggleSheet(true)">Keranjang &amp; Bayar &rarr;</button>
+  </div>
   <div id="productSearchModal" class="modal-pos"><div class="modal-content-pos">
-    <div class="modal-header-custom" style="margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;"><h3 style="margin:0;">🔍 Cari Produk</h3><button onclick="closeModal('productSearchModal')" style="background:none; border:none; color:var(--gray-mid); font-size:1.5rem; cursor:pointer;">&times;</button></div>
+    <div class="modal-header-custom" style="margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;"><h3 style="margin:0;">&#128269; Cari Produk</h3><button onclick="closeModal('productSearchModal')" style="background:none; border:none; color:var(--gray-mid); font-size:1.5rem; cursor:pointer;">&times;</button></div>
     <input type="text" id="searchBoxPos" class="form-control" placeholder="Nama / Kode / Brand produk..." oninput="posSearchProducts()">
     <div id="searchResultsPos"></div>
   </div></div>
   <div id="cashPaymentModal" class="modal-pos"><div class="modal-content-pos">
-    <div class="modal-header-custom" style="margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;"><h3 style="margin:0;">💵 Pembayaran Cash</h3><button onclick="closeModal('cashPaymentModal')" style="background:none; border:none; color:var(--gray-mid); font-size:1.5rem; cursor:pointer;">&times;</button></div>
+    <div class="modal-header-custom" style="margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;"><h3 style="margin:0;">&#128181; Pembayaran Cash</h3><button onclick="closeModal('cashPaymentModal')" style="background:none; border:none; color:var(--gray-mid); font-size:1.5rem; cursor:pointer;">&times;</button></div>
     <div style="margin-bottom:1rem;"><label style="display:block; margin-bottom:0.5rem; color:var(--gray-mid);">Total Pembayaran</label><div id="cashTotal" style="font-size:1.5rem; font-weight:bold; color:var(--orange);"></div></div>
     <div style="margin-bottom:1rem;"><label style="display:block; margin-bottom:0.5rem; color:var(--gray-mid);">Uang Diterima</label><input type="number" id="cashReceived" class="form-control" min="0" oninput="posCalculateChange()"></div>
     <div style="margin-bottom:1rem;"><label style="display:block; margin-bottom:0.5rem; color:var(--gray-mid);">Kembalian</label><input type="text" id="cashChange" class="form-control" readonly></div>
@@ -3360,30 +3404,54 @@ function pageAdminPos() {
   return { shell: 'admin', nav: 'pos', title: 'POS - Point of Sale', cls: 'pg-apos', html, after };
 }
 const posMatch = (p, s) => p.name.toLowerCase().includes(s) || p.item_code.toLowerCase().includes(s) || p.brand.toLowerCase().includes(s);
+function posSelectCat(catId) {
+  POS.cat = catId;
+  $$('#posCats .pos-cat-pill').forEach((b, i) => {
+    const target = i === 0 ? '' : String(DB.categories[i - 1]?.id || '');
+    b.classList.toggle('active', target === String(catId));
+  });
+  posRenderGrid();
+}
+function posToggleSheet(open) {
+  $('#posCartPanel')?.classList.toggle('sheet-open', open);
+  $('#posCartBackdrop')?.classList.toggle('show', open);
+}
 function posRenderGrid() {
   const s = ($('#posSearch')?.value || '').trim().toLowerCase();
-  const list = s.length >= 2 ? DB.products.filter(p => posMatch(p, s)) : DB.products;
-  $('#productsGrid').innerHTML = list.length ? list.map(p => `
-    <div class="pos-item ${p.current_stock <= 0 ? 'pos-item-out' : ''}" onclick="posAdd(${p.id})">
-      <div style="font-weight:bold; margin-bottom:0.5rem; color:var(--off-white);">${esc(p.name)}</div>
-      <div style="color:var(--orange); font-family:var(--font-mono);">${rp(posPrice(p))}</div>
-      <div style="color:var(--gray-mid); font-size:0.8rem; margin-top:0.5rem;">Stok: ${p.current_stock}</div>
-    </div>`).join('') : '<div style="padding:2rem; color:var(--gray-mid);">Tidak ada produk ditemukan</div>';
+  const cat = POS.cat ? Number(POS.cat) : null;
+  const list = DB.products.filter(p => (!cat || p.category_id === cat) && (!s || posMatch(p, s)));
+  $('#productsGrid').innerHTML = list.length ? list.map(p => {
+    const inC = POS.cart.find(i => i.id === p.id);
+    const idx = inC ? POS.cart.indexOf(inC) : -1;
+    return `
+    <div class="pos-item ${p.current_stock <= 0 ? 'pos-item-out' : ''} ${inC ? 'in-cart' : ''}" onclick="posAdd(${p.id})">
+      ${inC ? `<span class="pos-item-badge">x${inC.qty}</span>` : ''}
+      <div style="font-size:.68rem;color:var(--gray-mid);font-family:var(--font-mono);">${esc(p.item_code)} · ${esc(p.brand)}</div>
+      <div style="font-weight:600; color:var(--off-white); font-size:.88rem; line-height:1.3;">${esc(p.name)}</div>
+      <div style="color:var(--orange); font-family:var(--font-mono); font-weight:700; font-size:.92rem;">${rp(posPrice(p))}</div>
+      ${inC ? `<div class="pos-item-stepper" onclick="event.stopPropagation()">
+        <button type="button" class="pos-qty-btn" onclick="posChangeQty(${idx}, -1)">&minus;</button>
+        <span style="font-family:var(--font-mono);font-size:.82rem;font-weight:700;">${inC.qty}</span>
+        <button type="button" class="pos-qty-btn" onclick="posChangeQty(${idx}, 1)">+</button>
+      </div>` : `<div style="color:var(--gray-mid); font-size:0.75rem; margin-top:auto;">Stok: ${p.current_stock} ${esc(p.unit)}</div>`}
+    </div>`;
+  }).join('') : '<div style="padding:2rem; color:var(--gray-mid); grid-column:1/-1; text-align:center;">Tidak ada produk ditemukan</div>';
 }
 function posAdd(id) {
   const p = findProduct(id); const ex = POS.cart.find(i => i.id === id); const q = (ex ? ex.qty : 0) + 1;
   if (q > p.current_stock) return toast('error', 'Stok tidak cukup', `Stok ${p.name} tidak cukup. Sisa: ${p.current_stock} pcs.`);
   if (ex) ex.qty = q; else POS.cart.push({ id, qty: 1 });
-  posRenderCart();
+  posRenderCart(); posRenderGrid();
 }
 function posChangeQty(idx, d) {
   const i = POS.cart[idx]; if (!i) return;
   if (d > 0) return posAdd(i.id);
-  i.qty -= 1; if (i.qty < 1) POS.cart.splice(idx, 1); posRenderCart();
+  i.qty -= 1; if (i.qty < 1) POS.cart.splice(idx, 1); posRenderCart(); posRenderGrid();
 }
-function posRemove(idx) { POS.cart.splice(idx, 1); posRenderCart(); }
+function posRemove(idx) { POS.cart.splice(idx, 1); posRenderCart(); posRenderGrid(); }
 function posRenderCart() {
   const box = $('#cartItems'); if (!box) return;
+  const tot = posTotal(), cnt = POS.cart.reduce((a, i) => a + i.qty, 0);
   box.innerHTML = POS.cart.length ? POS.cart.map((i, idx) => { const p = findProduct(i.id); const pr = posPrice(p); return `
     <div class="cart-row">
       <div>${esc(p.name)} <span style="color:var(--gray-mid);">(x${i.qty})</span>
@@ -3393,8 +3461,10 @@ function posRenderCart() {
         <button class="pos-qty-btn" onclick="posChangeQty(${idx}, 1)" title="Tambah">+</button>
         <button onclick="posRemove(${idx})" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:1.2rem;" title="Hapus">&times;</button>
       </div>
-    </div>`; }).join('') : '<div style="color:var(--gray-mid); font-size:0.85rem;">Klik produk di sebelah kiri untuk menambahkannya.</div>';
-  $('#cartTotal').textContent = rp(posTotal());
+    </div>`; }).join('') : '<div style="color:var(--gray-mid); font-size:0.85rem;">Tap produk untuk menambahkan ke keranjang.</div>';
+  $('#cartTotal').textContent = rp(tot);
+  if ($('#posMobCount')) $('#posMobCount').textContent = `${cnt} item di keranjang`;
+  if ($('#posMobTotal')) $('#posMobTotal').textContent = rp(tot);
 }
 function posSelectPayment(m) {
   POS.payment = m; $$('.payment-option').forEach(el => el.classList.remove('selected'));
@@ -4367,6 +4437,73 @@ function deleteTier(id) {
   });
 }
 
+/* ---------- admin/categories (CRUD Kategori Produk) ---------- */
+function pageAdminCategories() {
+  const cats = DB.categories;
+  const html = `
+  <div class="admin-page-header" style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;">
+    <div>
+      <h2 class="admin-page-title">Kategori Produk</h2>
+      <p style="color:var(--gray-mid);font-size:.82rem;margin:.25rem 0 0;">Tambah, ubah, atau hapus kategori. Semua filter toko &amp; POS otomatis menyesuaikan.</p>
+    </div>
+    <button class="btn" onclick="openCategoryEditor()">+ Tambah Kategori</button>
+  </div>
+  <div class="admin-table-wrapper table-scroll"><table class="admin-table">
+    <thead><tr><th>No</th><th>Nama Kategori</th><th>Deskripsi</th><th>Jumlah Produk</th><th>Aksi</th></tr></thead>
+    <tbody>${cats.length ? cats.map((c, i) => `<tr>
+      <td>${i + 1}</td>
+      <td>${esc(c.name)}</td>
+      <td style="color:var(--text-muted);">${esc(c.description || '-')}</td>
+      <td><span style="background:rgba(232,82,26,.16); color:var(--orange); padding:0.25rem 0.65rem; border-radius:4px; font-weight:600; font-size:.8rem;">${catCount(c.id)} produk</span></td>
+      <td style="white-space:nowrap;">
+        <button class="btn btn-sm" style="background:transparent; border:1px solid var(--orange); color:var(--orange);" onclick="openCategoryEditor(${c.id})">Edit</button>
+        <button class="btn btn-sm" style="background:transparent; border:1px solid #dc3545; color:#dc3545; margin-left:0.5rem;" onclick="deleteCategory(${c.id})">Hapus</button>
+      </td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Belum ada kategori produk</td></tr>'}
+    </tbody></table></div>
+  <div id="catEditModal" class="modal"><div class="modal-content">
+    <div class="modal-header-custom"><h3 id="catModalTitle">Tambah Kategori</h3></div>
+    <form id="catEditForm">
+      <input type="hidden" id="catId">
+      <div class="form-group"><label>Nama Kategori *</label><input type="text" id="cat_name" class="form-control" required maxlength="100" placeholder="Contoh: Aksesoris &amp; Bodi"></div>
+      <div class="form-group"><label>Deskripsi</label><textarea id="cat_desc" class="form-control" rows="3" placeholder="Deskripsi singkat kategori (opsional)"></textarea></div>
+      <div style="display:flex; gap:1rem; margin-top:1.5rem; border-top: 1px solid rgba(242, 239, 230, 0.08); padding-top: 1rem;">
+        <button type="submit" class="btn">Simpan</button>
+        <button type="button" class="btn" style="background:transparent; border:1px solid var(--border);" onclick="closeModal('catEditModal')">Batal</button>
+      </div>
+    </form>
+  </div></div>`;
+  const after = () => $('#catEditForm').addEventListener('submit', e => { e.preventDefault(); saveCategory(); });
+  return { shell: 'admin', nav: 'categories', title: 'Kategori Produk', cls: 'pg-acats', html, after };
+}
+function openCategoryEditor(id) {
+  $('#catEditForm').reset(); $('#catId').value = id || '';
+  $('#catModalTitle').textContent = id ? 'Edit Kategori' : 'Tambah Kategori';
+  if (id) { const c = findCategory(id); if (c) { $('#cat_name').value = c.name; $('#cat_desc').value = c.description || ''; } }
+  openModal('catEditModal');
+  setTimeout(() => $('#cat_name')?.focus(), 40);
+}
+function saveCategory() {
+  const id = Number($('#catId').value) || null, name = $('#cat_name').value.trim(), desc = $('#cat_desc').value.trim() || null;
+  if (!name) return adminToast('error', 'Nama kategori wajib diisi.');
+  const slug = slugify(name);
+  if (DB.categories.some(c => slugify(c.name) === slug && c.id !== id)) return adminToast('error', 'Gagal: nama kategori sudah ada.');
+  if (id) Object.assign(findCategory(id), { name, description: desc });
+  else DB.categories.push({ id: nextId('categories'), name, description: desc });
+  save(); closeModal('catEditModal'); rerender();
+  adminToast('success', id ? 'Kategori berhasil diperbarui.' : 'Kategori baru berhasil ditambahkan.');
+}
+function deleteCategory(id) {
+  const cnt = catCount(id);
+  if (cnt > 0) return adminToast('error', `Kategori tidak dapat dihapus karena masih digunakan oleh ${cnt} produk.`);
+  confirmBox('Yakin ingin menghapus kategori ini?', ok => {
+    if (!ok) return;
+    DB.categories = DB.categories.filter(c => c.id !== id);
+    if (String(POS.cat) === String(id)) POS.cat = '';
+    save(); rerender();
+    adminToast('success', 'Kategori berhasil dihapus.');
+  });
+}
+
 /* ---------- admin/broadcasts/index.blade.php ---------- */
 const BC = { selected: new Set() };
 function pageAdminBroadcasts() {
@@ -4748,7 +4885,7 @@ function resetDemo() {
 const ROUTES = [
   [/^\/$/, pageHome], [/^\/promo$/, pageHome],
   [/^\/(?:produk|kategori)$/, (q) => pageCatalog(q)],
-  [/^\/dashboard$/, (q) => pageCatalog(q), { auth: true }],
+  [/^\/dashboard$/, (q) => me()?.role === 'admin' ? ({ redirect: '#/admin/dashboard' }) : pageCatalog(q), { auth: true }],
   [/^\/kategori\/([^/]+)$/, pageCategory],
   [/^\/produk\/(\d+)$/, pageProduct],
   [/^\/cart$/, pageCart, { auth: true }],
@@ -4765,6 +4902,7 @@ const ROUTES = [
   [/^\/admin\/?$/, () => ({ redirect: '#/admin/dashboard' }), { admin: true }],
   [/^\/admin\/dashboard$/, pageAdminDashboard, { admin: true }],
   [/^\/admin\/products$/, pageAdminProducts, { admin: true }],
+  [/^\/admin\/categories$/, pageAdminCategories, { admin: true }],
   [/^\/admin\/pos$/, pageAdminPos, { admin: true }],
   [/^\/admin\/pos\/stock-in$/, pageAdminStockIn, { admin: true }],
   [/^\/admin\/orders$/, pageAdminOrders, { admin: true }],
@@ -4830,7 +4968,7 @@ document.addEventListener('keydown', e => {
 window.addEventListener('storage', e => { if (e.key === STORE_KEY) { load(); rerender(); } }); // sinkron antar-tab
 
 load();
-if (!location.hash) history.replaceState(null, '', '#/');
+if (!location.hash) history.replaceState(null, '', me()?.role === 'admin' ? '#/admin/dashboard' : '#/');
 render();
 
 </script>
