@@ -1249,23 +1249,34 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield}
 }
 /* Printer NCR & Modal Cetak Nota Admin */
 .ncr-print-root{display:none}
-.ncr-preview-wrap{background:#e5e5e5;border-radius:6px;padding:12px;max-height:46vh;overflow:auto;display:flex;justify-content:center;align-items:flex-start}
-.ncr-sheet{background:#fff;color:#000;font-family:'Courier New',Courier,monospace;font-size:12px;line-height:1.35;padding:14px 16px;width:100%;box-sizing:border-box;border:1px solid #000}
-.ncr-sheet *{color:#000 !important;border-color:#000 !important;box-shadow:none !important}
-.ncr-sheet.sz-thermal_58{max-width:220px;font-size:10.5px;padding:8px}
-.ncr-sheet.sz-thermal_80{max-width:300px;font-size:11.5px;padding:10px}
-.ncr-sheet.sz-ncr_half{max-width:680px;font-size:11.5px}
-.ncr-sheet.sz-ncr_full{max-width:740px;font-size:12px}
+.ncr-opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.75rem}
+.ncr-preview-wrap{background:#e5e5e5;border-radius:6px;padding:12px;max-height:48vh;overflow:auto;-webkit-overflow-scrolling:touch;display:block}
+.ncr-sheet{background:#fff;color:#000;font-family:'Courier New',Courier,monospace;font-size:12px;line-height:1.35;padding:14px 16px;margin:0 auto;box-sizing:border-box;border:1px solid #000;overflow-wrap:anywhere}
+.ncr-sheet *{color:#000 !important;border-color:#000 !important;box-shadow:none !important;box-sizing:border-box}
+.ncr-sheet.sz-thermal_58{width:220px;min-width:220px;font-size:10px;padding:8px}
+.ncr-sheet.sz-thermal_80{width:300px;min-width:300px;font-size:11px;padding:10px}
+.ncr-sheet.sz-ncr_half{width:640px;min-width:600px;font-size:11.5px}
+.ncr-sheet.sz-ncr_full{width:700px;min-width:660px;font-size:12px}
 .ncr-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:8px}
 .ncr-head.center{display:block;text-align:center;border-bottom:1px dashed #000}
 .ncr-brand{font-size:16px;font-weight:700;letter-spacing:.05em}
 .ncr-doc-title{font-size:14px;font-weight:700;text-transform:uppercase;border:1.5px solid #000;padding:2px 8px;display:inline-block}
 .ncr-meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px;font-size:11px}
-.ncr-table{width:100%;border-collapse:collapse;margin:8px 0}
+.ncr-table-box{width:100%;overflow-x:auto}
+.ncr-table{width:100%;border-collapse:collapse;margin:8px 0;table-layout:auto}
 .ncr-table th,.ncr-table td{border:1px solid #000;padding:4px 6px;text-align:left;vertical-align:top}
 .ncr-table th{font-weight:700;text-transform:uppercase;font-size:10.5px}
 .ncr-table .c{text-align:center}.ncr-table .r{text-align:right;white-space:nowrap}
-.ncr-dashed-row{display:flex;justify-content:space-between;gap:8px;padding:2px 0}
+.ncr-sheet.sz-thermal_58 .ncr-head,.ncr-sheet.sz-thermal_80 .ncr-head{flex-direction:column;gap:4px}
+.ncr-sheet.sz-thermal_58 .ncr-head > div,.ncr-sheet.sz-thermal_80 .ncr-head > div{text-align:left !important;width:100%}
+.ncr-sheet.sz-thermal_58 .ncr-meta,.ncr-sheet.sz-thermal_80 .ncr-meta{flex-direction:column;gap:4px;font-size:9.5px}
+.ncr-sheet.sz-thermal_58 .ncr-meta > div,.ncr-sheet.sz-thermal_80 .ncr-meta > div{text-align:left !important}
+.ncr-sheet.sz-thermal_58 .ncr-table,.ncr-sheet.sz-thermal_80 .ncr-table{table-layout:fixed;font-size:8.5px}
+.ncr-sheet.sz-thermal_58 .ncr-table th,.ncr-sheet.sz-thermal_58 .ncr-table td,.ncr-sheet.sz-thermal_80 .ncr-table th,.ncr-sheet.sz-thermal_80 .ncr-table td{padding:2px 3px;word-break:break-word;white-space:normal !important;font-size:8.5px}
+.ncr-sheet.sz-thermal_58 .ncr-sigs,.ncr-sheet.sz-thermal_80 .ncr-sigs{gap:8px;margin-top:10px;font-size:9px}
+.ncr-sheet.sz-thermal_58 .ncr-sig-box,.ncr-sheet.sz-thermal_80 .ncr-sig-box{padding-top:24px;margin:0 2px}
+.ncr-dashed-row{display:flex;justify-content:space-between;gap:8px;padding:2px 0;align-items:baseline}
+.ncr-dashed-row span:last-child{white-space:nowrap;flex-shrink:0}
 .ncr-hr{border:none;border-top:1px dashed #000;margin:6px 0}
 .ncr-hr-solid{border:none;border-top:2px solid #000;margin:6px 0}
 .ncr-sigs{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:18px;text-align:center;font-size:11px}
@@ -1274,7 +1285,12 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield}
 .ncr-tpl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem;margin-bottom:.75rem}
 .ncr-tpl-btn{background:#151513;border:1px solid var(--border);color:var(--gray-light);padding:.5rem .4rem;border-radius:4px;font-size:.78rem;font-weight:600;cursor:pointer;text-align:center;transition:all .15s}
 .ncr-tpl-btn.active{background:rgba(232,82,26,.16);border-color:var(--orange);color:var(--orange)}
-@media (max-width:640px){.ncr-tpl-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){
+  .ncr-tpl-grid{grid-template-columns:repeat(2,1fr)}
+  .ncr-opt-grid{grid-template-columns:1fr}
+  .ncr-preview-wrap{padding:8px;max-height:44vh}
+  #adminPrintModal .modal-content{padding:1rem !important;width:96% !important}
+}
 /* Back Office Pembuat Nota & Stok Masuk ala iPOS (.pg-abonew, .pg-astock) */
 .pg-abonew .bo-card,.pg-astock .bo-card{background:#151513;border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1.1rem}
 .pg-abonew .bo-sec-title,.pg-astock .bo-sec-title{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin:0 0 .9rem;padding-bottom:.5rem;border-bottom:1px dashed var(--border)}
@@ -1322,7 +1338,7 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield}
 @media print{
   body.ncr-printing #app,body.ncr-printing #toastStack,body.ncr-printing .modal,body.ncr-printing .pl-confirm,body.ncr-printing .pl-snap{display:none !important}
   body.ncr-printing,body.ncr-printing .ncr-print-root{display:block !important;background:#fff !important;margin:0 !important;padding:0 !important}
-  body.ncr-printing .ncr-sheet{border:none !important;max-width:100% !important;width:100% !important;padding:0 !important}
+  body.ncr-printing .ncr-sheet{border:none !important;min-width:0 !important;max-width:100% !important;width:100% !important;padding:0 !important}
 }
 @media print{
   .shop .nav,.shop .breadcrumb,.shop .ai-fab,.shop .footer-mini,.pg-invoice .inv-actions{display:none !important}
@@ -3684,7 +3700,10 @@ function pageAdminOrder(q, id) {
   const html = `<div class="page-wrapper">
     <div style="display:flex; justify-content:space-between; align-items:center; gap:.75rem; flex-wrap:wrap; margin-bottom:1rem;">
       <a href="#/admin/orders" class="btn btn-outline btn-sm" style="text-decoration:none;">← KEMBALI KE PENJUALAN</a>
-      <button type="button" class="btn btn-sm" onclick="openAdminPrintModal(${o.id},'long')">&#128424; Cetak Nota / Surat Jalan</button>
+      <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+        <button type="button" class="btn btn-outline btn-sm" style="border-color:var(--orange); color:var(--orange);" onclick="quickOrderPdf(${o.id})">Simpan PDF</button>
+        <button type="button" class="btn btn-sm" onclick="openAdminPrintModal(${o.id},'long')">&#128424; Cetak Nota / Surat Jalan</button>
+      </div>
     </div>
     <div class="order-detail-container">
       <div>
@@ -3717,6 +3736,14 @@ function pageAdminOrder(q, id) {
     </div>
   </div>`;
   return { shell: 'admin', nav: 'orders', title: 'Detail Penjualan', cls: 'pg-aorder', html };
+}
+function quickOrderPdf(id) {
+  const o = DB.transactions.find(t => t.id == id); if (!o) return;
+  NCR_STATE.orderId = id;
+  NCR_STATE.tpl = o.payment_method === 'Kredit / Bon' ? 'bon' : 'long';
+  NCR_STATE.size = 'ncr_full';
+  NCR_STATE.note = [o.note, o.due_date ? 'Jatuh Tempo: ' + o.due_date : ''].filter(Boolean).join(' · ');
+  downloadAdminPrintPdf();
 }
 function updateOrderStatus(id, status) { // AdminController@updateOrderStatus
   const o = DB.transactions.find(t => t.id === id); if (!o) return;
@@ -3991,7 +4018,7 @@ function ensureNcrInfra() {
           <button type="button" class="ncr-tpl-btn" data-tpl="bon">Nota Bon</button>
           <button type="button" class="ncr-tpl-btn" data-tpl="surat_jalan">Surat Jalan</button>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.75rem;">
+        <div class="ncr-opt-grid">
           <select id="ncrSizeSelect" class="form-control" style="background:#181816;border:1px solid rgba(242,239,230,.15);color:#F2EFE6;padding:.5rem .75rem;border-radius:4px;">
             <option value="ncr_full">NCR Penuh / A4 (9.5&quot;&times;11&quot;)</option>
             <option value="ncr_half">NCR Setengah / A5 (9.5&quot;&times;5.5&quot;)</option>
@@ -4001,9 +4028,10 @@ function ensureNcrInfra() {
           <input type="text" id="ncrNoteInput" class="form-control" style="background:#181816;border:1px solid rgba(242,239,230,.15);color:#F2EFE6;padding:.5rem .75rem;border-radius:4px;" placeholder="Catatan / Jatuh Tempo / Kurir...">
         </div>
         <div class="ncr-preview-wrap" id="ncrPreviewWrap"></div>
-        <div style="display:flex;gap:.65rem;margin-top:1rem;">
-          <button type="button" class="btn btn-outline" style="flex:1;background:transparent;border:1px solid rgba(242,239,230,.2);color:#F2EFE6;padding:.65rem;border-radius:4px;cursor:pointer;" onclick="closeNcrModal()">Tutup</button>
-          <button type="button" class="btn" style="flex:2;background:#E8521A;color:#fff;border:none;padding:.65rem;border-radius:4px;font-weight:600;cursor:pointer;" onclick="executeAdminPrint()">&#128424; Cetak Sekarang (NCR)</button>
+        <div style="display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline" style="flex:1;min-width:90px;background:transparent;border:1px solid rgba(242,239,230,.2);color:#F2EFE6;padding:.65rem;border-radius:4px;cursor:pointer;" onclick="closeNcrModal()">Tutup</button>
+          <button type="button" class="btn btn-outline" style="flex:1;min-width:115px;background:transparent;border:1px solid var(--orange);color:var(--orange);padding:.65rem;border-radius:4px;font-weight:600;cursor:pointer;" onclick="downloadAdminPrintPdf()">Simpan PDF</button>
+          <button type="button" class="btn" style="flex:2;min-width:160px;background:#E8521A;color:#fff;border:none;padding:.65rem;border-radius:4px;font-weight:600;cursor:pointer;" onclick="executeAdminPrint()">&#128424; Cetak (NCR)</button>
         </div>
       </div>
     </div>`);
@@ -4078,7 +4106,7 @@ function buildNcrSheetHtml(o, tpl, size, note) {
       <div><strong>${isSJ ? 'Dikirim Kepada:' : 'Kepada Yth:'}</strong><br>${esc(custName)} (${esc(custPhone)})<br>Alamat: ${esc(addr)}</div>
       <div style="text-align:right;">${isSJ ? `Ref. Invoice: ${esc(o.invoice_number)}` : `Status: <strong>${isBon && !isPaid ? 'BON / BELUM LUNAS' : statusLbl}</strong><br>Metode: ${esc(o.payment_method || 'Cash')}`}${o.sales_name ? `<br>Sales: ${esc(o.sales_name)}` : ''}</div>
     </div>
-    <table class="ncr-table"><thead>${thead}</thead><tbody>${rows}</tbody></table>
+    <div class="ncr-table-box"><table class="ncr-table"><thead>${thead}</thead><tbody>${rows}</tbody></table></div>
     ${isSJ ? '' : `<div style="display:flex;justify-content:flex-end;margin-top:6px;"><table class="ncr-table" style="width:auto;min-width:230px;margin:0;">
       ${o.discount_amount ? `<tr><td>Diskon Faktur</td><td class="r">-${rp(o.discount_amount)}</td></tr>` : ''}
       ${o.shipping_cost ? `<tr><td>Ongkir / Biaya</td><td class="r">${rp(o.shipping_cost)}</td></tr>` : ''}
@@ -4110,6 +4138,110 @@ function executeAdminPrint() {
   const cleanup = () => document.body.classList.remove('ncr-printing');
   window.addEventListener('afterprint', cleanup, { once: true });
   setTimeout(() => { window.print(); setTimeout(cleanup, 1500); }, 60);
+}
+function downloadAdminPrintPdf() {
+  const o = DB.transactions.find(t => t.id == NCR_STATE.orderId); if (!o) return;
+  if (!window.jspdf || !window.jspdf.jsPDF) { executeAdminPrint(); return; }
+  const { jsPDF } = window.jspdf;
+  const tpl = NCR_STATE.tpl, size = NCR_STATE.size, note = NCR_STATE.note;
+  const isThermal = size.startsWith('thermal_'), isHalf = size === 'ncr_half';
+  const doc = isThermal
+    ? new jsPDF({ unit: 'pt', format: [size === 'thermal_58' ? 164 : 226, 560] })
+    : new jsPDF({ unit: 'pt', format: isHalf ? 'a5' : 'a4', orientation: isHalf ? 'landscape' : 'portrait' });
+  const W = doc.internal.pageSize.getWidth(), L = isThermal ? 10 : 36, R = W - L;
+  const u = findUser(o.user_id), custName = u ? u.name : (o.shipping_address || 'Walk-in Customer');
+  const custPhone = u?.phone || '-', addr = o.shipping_address || u?.address || '-';
+  const items = detailsOf(o.id).map((d, i) => {
+    const p = findProduct(d.product_id);
+    return { no: i + 1, code: p?.item_code || '-', name: p?.name || 'Produk', unit: p?.unit || 'PCS', qty: d.qty, price: d.price, sub: d.qty * d.price };
+  });
+  const isPaid = PAID.includes(o.status), statusLbl = isPaid ? 'LUNAS' : o.status === 'cancelled' ? 'DIBATALKAN' : 'BELUM LUNAS';
+  const dateStr = fmtDate(o.created_at, 'd/m/Y H:i');
+  const titleMap = { short: 'STRUK PENJUALAN', long: 'NOTA PENJUALAN', bon: 'NOTA BON / TEMPO', surat_jalan: 'SURAT JALAN' };
+  const isSJ = tpl === 'surat_jalan', isBon = tpl === 'bon';
+  let y = isThermal ? 20 : 40;
+  doc.setFont('courier', 'bold'); doc.setFontSize(isThermal ? 11 : 16);
+  if (isThermal) {
+    doc.text('PARTLYFE', W / 2, y, { align: 'center' }); y += 12;
+    doc.setFont('courier', 'normal'); doc.setFontSize(8);
+    doc.text(titleMap[tpl], W / 2, y, { align: 'center' }); y += 10;
+    doc.line(L, y, R, y); y += 11;
+    doc.text(`No : ${o.invoice_number}`, L, y); y += 10;
+    doc.text(`Tgl: ${dateStr}`, L, y); y += 10;
+    doc.text(`Plg: ${custName}`, L, y); y += 10;
+    if (!isSJ) { doc.text(`Sts: ${isBon && !isPaid ? 'BON/TEMPO' : statusLbl}`, L, y); y += 10; }
+    doc.line(L, y, R, y); y += 11;
+    items.forEach(it => {
+      const nl = doc.splitTextToSize(`${it.no}. ${it.name}`, R - L);
+      doc.setFont('courier', 'bold'); doc.text(nl, L, y); y += nl.length * 9 + 2;
+      doc.setFont('courier', 'normal');
+      if (isSJ) doc.text(`${it.qty} ${it.unit} [  ]`, L + 8, y);
+      else { doc.text(`${it.qty} ${it.unit} x ${rp(it.price)}`, L + 6, y); doc.text(rp(it.sub), R, y, { align: 'right' }); }
+      y += 11;
+    });
+    doc.line(L, y, R, y); y += 12;
+    if (!isSJ) { doc.setFont('courier', 'bold'); doc.setFontSize(9.5); doc.text('TOTAL', L, y); doc.text(rp(o.total_amount), R, y, { align: 'right' }); y += 14; }
+    if (note) { const nt = doc.splitTextToSize(`Catatan: ${note}`, R - L); doc.setFont('courier', 'normal'); doc.setFontSize(7.5); doc.text(nt, L, y); y += nt.length * 9 + 6; }
+    doc.setFont('courier', 'normal'); doc.setFontSize(7.5);
+    doc.text('Terima kasih telah berbelanja.', W / 2, y + 6, { align: 'center' });
+  } else {
+    doc.text('PARTLYFE', L, y);
+    doc.setFont('courier', 'normal'); doc.setFontSize(9);
+    doc.text('Distributor Sparepart Motor Terpercaya', L, y + 13);
+    doc.text('Jl. Rungkut Industri, Surabaya', L, y + 24);
+    doc.setFont('courier', 'bold'); doc.setFontSize(13);
+    doc.text(titleMap[tpl], R, y, { align: 'right' });
+    doc.setFont('courier', 'normal'); doc.setFontSize(9.5);
+    doc.text(String(o.invoice_number), R, y + 14, { align: 'right' });
+    doc.text(`Tgl: ${dateStr}`, R, y + 26, { align: 'right' });
+    y += 38; doc.line(L, y, R, y); y += 16;
+    doc.setFontSize(9);
+    doc.text(`${isSJ ? 'Dikirim Kepada' : 'Kepada Yth'}: ${custName} (${custPhone})`, L, y);
+    if (!isSJ) doc.text(`Status: ${isBon && !isPaid ? 'BON / TEMPO' : statusLbl}`, R, y, { align: 'right' });
+    y += 12;
+    const addrLines = doc.splitTextToSize(`Alamat: ${addr}`, (R - L) * 0.65);
+    doc.text(addrLines, L, y);
+    if (o.sales_name) doc.text(`Sales: ${o.sales_name}`, R, y, { align: 'right' });
+    y += addrLines.length * 11 + 10;
+    doc.setFont('courier', 'bold'); doc.setFontSize(9);
+    doc.line(L, y, R, y); y += 13;
+    doc.text('No', L + 2, y); doc.text('Kode', L + 28, y); doc.text('Nama Barang', L + 86, y);
+    if (isSJ) { doc.text('Qty', R - 75, y, { align: 'right' }); doc.text('Sat', R - 38, y, { align: 'right' }); doc.text('Cek', R - 4, y, { align: 'right' }); }
+    else { doc.text('Qty', R - 155, y, { align: 'right' }); doc.text('Harga', R - 80, y, { align: 'right' }); doc.text('Subtotal', R - 2, y, { align: 'right' }); }
+    y += 5; doc.line(L, y, R, y); y += 13;
+    doc.setFont('courier', 'normal'); doc.setFontSize(9);
+    const maxW = isSJ ? R - L - 175 : R - L - 255;
+    items.forEach(it => {
+      const nl = doc.splitTextToSize(it.name, Math.max(90, maxW));
+      if (y + nl.length * 11 > doc.internal.pageSize.getHeight() - 90) { doc.addPage(); y = 36; }
+      doc.text(String(it.no), L + 2, y); doc.text(String(it.code), L + 28, y); doc.text(nl, L + 86, y);
+      if (isSJ) { doc.text(String(it.qty), R - 75, y, { align: 'right' }); doc.text(String(it.unit), R - 38, y, { align: 'right' }); doc.text('[  ]', R - 4, y, { align: 'right' }); }
+      else { doc.text(`${it.qty} ${it.unit}`, R - 155, y, { align: 'right' }); doc.text(rp(it.price), R - 80, y, { align: 'right' }); doc.text(rp(it.sub), R - 2, y, { align: 'right' }); }
+      y += Math.max(14, nl.length * 11 + 4);
+    });
+    doc.line(L, y, R, y); y += 16;
+    if (!isSJ) {
+      if (o.discount_amount) { doc.text('Diskon Faktur:', R - 130, y); doc.text('-' + rp(o.discount_amount), R - 2, y, { align: 'right' }); y += 13; }
+      if (o.shipping_cost) { doc.text('Ongkir / Biaya:', R - 130, y); doc.text(rp(o.shipping_cost), R - 2, y, { align: 'right' }); y += 13; }
+      doc.setFont('courier', 'bold'); doc.setFontSize(11);
+      doc.text('TOTAL:', R - 130, y); doc.text(rp(o.total_amount), R - 2, y, { align: 'right' }); y += 16;
+      if (isBon && o.dp_amount) { doc.setFont('courier', 'normal'); doc.setFontSize(9.5); doc.text('DP / Dibayar:', R - 130, y); doc.text(rp(o.dp_amount), R - 2, y, { align: 'right' }); y += 13; doc.setFont('courier', 'bold'); doc.text('Sisa Bon:', R - 130, y); doc.text(rp(Math.max(0, o.total_amount - o.dp_amount)), R - 2, y, { align: 'right' }); y += 15; }
+    }
+    if (note) { doc.setFont('courier', 'normal'); doc.setFontSize(9); doc.text(`Catatan: ${note}`, L, y); y += 16; }
+    y += 28;
+    doc.setFont('courier', 'normal'); doc.setFontSize(9);
+    if (isSJ) {
+      doc.text('( Gudang / Pengirim )', L + 40, y, { align: 'center' });
+      doc.text('( Kurir / Supir )', W / 2, y, { align: 'center' });
+      doc.text('( Penerima )', R - 40, y, { align: 'center' });
+    } else {
+      doc.text(isBon ? '( Yang Menerima / Bon )' : '( Penerima )', L + 70, y, { align: 'center' });
+      doc.text('( Hormat Kami )', R - 70, y, { align: 'center' });
+    }
+  }
+  const fname = `${isSJ ? 'SuratJalan' : 'Nota'}-${o.invoice_number}.pdf`;
+  doc.save(fname);
+  adminToast('success', `PDF ${fname} berhasil diunduh.`);
 }
 
 /* ---------- admin/users/index.blade.php ---------- */
